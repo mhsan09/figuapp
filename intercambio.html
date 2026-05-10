@@ -502,8 +502,8 @@
     let profileId = loadProfileId();
     let friendProfile = null;
     let friendQuantities = {};
-    let selectedGive = new Set();
-    let selectedReceive = new Set();
+    let selectedGive = {};
+    let selectedReceive = {};
     let scanner = null;
     let scannerMode = "friend-profile";
     let lastResultPayload = "";
@@ -544,8 +544,8 @@
       $("stopScannerBtn").addEventListener("click", stopScanner);
       $("applyTradeBtn").addEventListener("click", applySelectedTrade);
       $("clearSelectionBtn").addEventListener("click", () => {
-        selectedGive.clear();
-        selectedReceive.clear();
+        selectedGive = {};
+        selectedReceive = {};
         renderComparison();
       });
     }
@@ -866,8 +866,8 @@
 
           friendProfile = data;
           friendQuantities = data.quantities || {};
-          selectedGive.clear();
-          selectedReceive.clear();
+          selectedGive = {};
+          selectedReceive = {};
           renderComparison();
           showToast("QR leído");
           return;
@@ -909,124 +909,201 @@
       updateTrays();
     }
 
-    function renderSelectableCards(containerId, items, selectedSet, kind) {
+    function selectedQty(selectedMap, code) {
+      return Number(selectedMap[code] || 0);
+    }
+    
+    function maxSelectableQty(st, kind) {
+      if (kind === "give") {
+        return Math.max(0, qty(st.code) - 1);
+      }
+    
+      return Math.max(0, qtyFrom(friendQuantities, st.code) - 1);
+    }
+    
+    function addSelected(selectedMap, code, max) {
+      const current = selectedQty(selectedMap, code);
+    
+      if (current >= max) {
+        showToast("Ya no hay más repetidas disponibles");
+        return;
+      }
+    
+      selectedMap[code] = current + 1;
+    }
+    
+    function removeSelected(selectedMap, code) {
+      const current = selectedQty(selectedMap, code);
+    
+      if (current <= 1) {
+        delete selectedMap[code];
+        return;
+      }
+    
+      selectedMap[code] = current - 1;
+    }
+    
+    function totalSelectedUnits(selectedMap) {
+      return Object.values(selectedMap).reduce((sum, n) => sum + Number(n || 0), 0);
+    }
+    
+    function expandSelectedCodes(selectedMap) {
+      const arr = [];
+    
+      for (const [code, amount] of Object.entries(selectedMap)) {
+        for (let i = 0; i < Number(amount || 0); i++) {
+          arr.push(code);
+        }
+      }
+    
+      return arr;
+    }
+    
+    function renderSelectableCards(containerId, items, selectedMap, kind) {
       const box = $(containerId);
       box.innerHTML = "";
-
+    
       if (!items.length) {
         box.innerHTML = `<p class="small-note">No hay cartas disponibles en esta categoría.</p>`;
         return;
       }
-
+    
       for (const st of items) {
         const q = kind === "give" ? qty(st.code) : qtyFrom(friendQuantities, st.code);
+        const max = maxSelectableQty(st, kind);
+        const chosen = selectedQty(selectedMap, st.code);
+        const isSelected = chosen > 0;
+    
         const el = document.createElement("div");
-        const isSelected = selectedSet.has(st.code);
         el.className = `card available ${kind === "receive" ? "receive" : ""} ${isSelected ? "selected" : ""}`;
         el.innerHTML = `
           <div class="badge ${kind === "receive" ? "blue" : ""}">x${q}</div>
           <div class="code">${escapeHtml(st.code)}</div>
           <div class="name">${escapeHtml(sectionTitleWithFlag(st))}</div>
-          <div class="card-action">${isSelected ? "QUITAR" : "AÑADIR"}</div>
+          <div class="card-action">${isSelected ? `EN CESTA x${chosen}/${max}` : `AÑADIR · máx. ${max}`}</div>
         `;
-
+    
         el.addEventListener("click", () => {
-          if (selectedSet.has(st.code)) selectedSet.delete(st.code);
-          else selectedSet.add(st.code);
+          addSelected(selectedMap, st.code, max);
           renderComparison();
         });
-
+    
         box.appendChild(el);
       }
     }
-
+    
     function updateTrays() {
       renderChips("giveTray", selectedGive, "give");
       renderChips("receiveTray", selectedReceive, "receive");
     }
-
-    function renderChips(containerId, selectedSet, kind) {
+    
+    function renderChips(containerId, selectedMap, kind) {
       const box = $(containerId);
-      if (!selectedSet.size) {
+      const entries = Object.entries(selectedMap).filter(([, amount]) => Number(amount || 0) > 0);
+    
+      if (!entries.length) {
         box.className = "small-note";
         box.textContent = "Nada seleccionado.";
         return;
       }
-
+    
       box.className = "chips";
       box.innerHTML = "";
-
-      for (const code of selectedSet) {
+    
+      for (const [code, amount] of entries) {
         const chip = document.createElement("span");
         chip.className = `chip ${kind}`;
-        chip.innerHTML = `${escapeHtml(code)} <button type="button" aria-label="Quitar">×</button>`;
+        chip.innerHTML = `${escapeHtml(code)} x${amount} <button type="button" aria-label="Quitar">−</button>`;
+    
         chip.querySelector("button").addEventListener("click", (e) => {
           e.stopPropagation();
-          selectedSet.delete(code);
+          removeSelected(selectedMap, code);
           renderComparison();
         });
+    
         box.appendChild(chip);
       }
     }
-
+    
     function applyTrade(map, giveCodes, receiveCodes) {
       const next = { ...sanitizeQuantities(map) };
-
+    
       for (const code of giveCodes) {
         next[code] = Math.max(0, Number(next[code] || 0) - 1);
         if (next[code] === 0) delete next[code];
       }
-
+    
       for (const code of receiveCodes) {
         next[code] = Number(next[code] || 0) + 1;
       }
-
+    
       return sanitizeQuantities(next);
     }
-
+    
+    function countCodes(codes) {
+      const out = {};
+    
+      for (const code of codes) {
+        out[code] = Number(out[code] || 0) + 1;
+      }
+    
+      return out;
+    }
+    
     function applySelectedTrade() {
       if (!friendProfile) {
         alert("Primero escanea el QR de la otra persona.");
         return;
       }
-
-      if (!selectedGive.size && !selectedReceive.size) {
+    
+      if (!totalSelectedUnits(selectedGive) && !totalSelectedUnits(selectedReceive)) {
         alert("Selecciona al menos una carta para entregar o recibir.");
         return;
       }
-
+    
       quantities = loadQuantities();
-
-      const giveCodes = [...selectedGive];
-      const receiveCodes = [...selectedReceive];
-
-      const invalidGive = giveCodes.find(code => qty(code) <= 1 || qtyFrom(friendQuantities, code) !== 0);
-      const invalidReceive = receiveCodes.find(code => qtyFrom(friendQuantities, code) <= 1 || qty(code) !== 0);
-
+    
+      const giveCodes = expandSelectedCodes(selectedGive);
+      const receiveCodes = expandSelectedCodes(selectedReceive);
+    
+      const giveCounts = countCodes(giveCodes);
+      const receiveCounts = countCodes(receiveCodes);
+    
+      const invalidGive = Object.entries(giveCounts).find(([code, amount]) => {
+        return qty(code) - 1 < amount || qtyFrom(friendQuantities, code) !== 0;
+      });
+    
+      const invalidReceive = Object.entries(receiveCounts).find(([code, amount]) => {
+        return qtyFrom(friendQuantities, code) - 1 < amount || qty(code) !== 0;
+      });
+    
       if (invalidGive || invalidReceive) {
         alert("La selección ya no es válida. Se actualizará la comparación.");
         renderComparison();
         return;
       }
-
+    
       const updatedMine = applyTrade(quantities, giveCodes, receiveCodes);
       const updatedFriend = applyTrade(friendQuantities, receiveCodes, giveCodes);
-
+    
       saveQuantities(updatedMine);
       friendQuantities = updatedFriend;
-
+    
       lastResultPayload = encodeTradeResultPayload(friendProfile.ownerId, updatedFriend, { giveCodes, receiveCodes });
       generateQr("resultQr", lastResultPayload);
-
-      $("resultPanel").classList.remove("hidden");
+    
       $("resultSummary").textContent = `Tú entregaste: ${giveCodes.length ? giveCodes.join(", ") : "nada"}. Tú recibiste: ${receiveCodes.length ? receiveCodes.join(", ") : "nada"}.`;
-
-      selectedGive.clear();
-      selectedReceive.clear();
+    
+      selectedGive = {};
+      selectedReceive = {};
+    
       renderComparison();
+    
+      $("resultPanel").classList.remove("hidden");
+      $("resultPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    
       showToast("Cambio registrado");
     }
-
     function escapeHtml(str) {
       return String(str).replace(/[&<>"']/g, s => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[s]));
     }
