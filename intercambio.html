@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Intercambio · ALBUM 2026</title>
+  <title>Intercambio · FIGUAPP</title>
 
-  <link rel="apple-touch-icon" href="logomundial.png" />
-  <link rel="icon" type="image/png" href="logomundial.png" />
+  <link rel="apple-touch-icon" href="logoapp.png" />
+  <link rel="icon" type="image/png" href="logoapp.png" />
   <meta name="apple-mobile-web-app-title" content="INTERCAMBIO" />
   <meta name="theme-color" content="#0b0f19" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -477,17 +477,12 @@
     <section id="resultPanel" class="qr-box hidden">
       <h2>QR final para la otra persona</h2>
       <p class="small-note">
-        Tu lista ya fue actualizada. Ahora muestra este QR al otro celular para que también registre su cambio.
+        Tu lista ya fue actualizada. Ahora pídele a tu compañero que escanee este QR para efectuar el cambio en su propio álbum.
       </p>
       <div id="resultQr" class="qr-holder"></div>
       <p class="small-note" id="resultSummary"></p>
     </section>
 
-    <section class="list-card">
-      <div class="list-head"><div class="list-title">Respaldo manual del QR</div></div>
-      <p class="small-note">Si por alguna razón el QR no se lee, puedes copiar este texto y pegarlo en otra versión futura de la app.</p>
-      <textarea id="payloadBox" readonly></textarea>
-    </section>
   </div>
 
   <div id="toast" class="toast">Listo</div>
@@ -792,7 +787,6 @@
     function generateQr(containerId, payloadText) {
       const el = $(containerId);
       el.innerHTML = "";
-      $("payloadBox").value = payloadText;
 
       if (typeof QRCode === "undefined") {
         el.innerHTML = `<div class="error-box">No cargó la librería para generar QR. Revisa tu conexión a internet.</div>`;
