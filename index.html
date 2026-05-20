@@ -116,6 +116,26 @@
     #copyAllBtn {
       flex-shrink: 0;
     }
+
+    .copy-exchange-btn {
+      font-weight: 900;
+      gap: 7px;
+    }
+    
+    .copy-icon {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    
+    .btn.primary.copy-exchange-btn:hover {
+      background: #fde047;
+    }
     
     .byline {
       color: var(--muted);
@@ -308,7 +328,11 @@
             ZONA DE INTERCAMBIOS
           </a>
         
-          <button class="btn primary" id="copyAllBtn">
+          <button class="btn primary copy-exchange-btn" id="copyAllBtn" aria-label="Copiar intercambio" title="Copiar intercambio">
+            <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 5h8a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"></path>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
             RESUMEN
           </button>
         </div>
@@ -346,15 +370,15 @@
 
     <section class="lists">
       <div class="list-card">
-        <div class="list-head"><div class="list-title">Me faltan</div><button class="btn" data-copy="missingText">Copiar</button></div>
+        <div class="list-head"><div class="list-title">Me faltan</div></div>
         <textarea id="missingText" readonly></textarea>
       </div>
       <div class="list-card">
-        <div class="list-head"><div class="list-title">Tengo</div><button class="btn" data-copy="ownedText">Copiar</button></div>
+        <div class="list-head"><div class="list-title">Tengo</div></div>
         <textarea id="ownedText" readonly></textarea>
       </div>
       <div class="list-card">
-        <div class="list-head"><div class="list-title">Repetidas</div><button class="btn" data-copy="dupesText">Copiar</button></div>
+        <div class="list-head"><div class="list-title">Repetidas</div></div>
         <textarea id="dupesText" readonly></textarea>
       </div>
     </section>
@@ -396,7 +420,7 @@
       "BRA": "🇧🇷",
       "MAR": "🇲🇦",
       "HAI": "🇭🇹",
-      "SCO": "🏴",
+      "SCO": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
       "USA": "🇺🇸",
       "PAR": "🇵🇾",
       "AUS": "🇦🇺",
@@ -429,7 +453,7 @@
       "COD": "🇨🇩",
       "UZB": "🇺🇿",
       "COL": "🇨🇴",
-      "ENG": "🏴",
+      "ENG": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "CRO": "🇭🇷",
       "GHA": "🇬🇭",
       "PAN": "🇵🇦"
@@ -484,21 +508,75 @@
       if (view === "duplicates") return q > 1;
       return true;
     }
-    function line(st, includeQty=false) {
-      return includeQty ? `${st.code} (x${qty(st.code)})` : `${st.code}`;
+    function stickerNumber(st) {
+      if (st.code === "00") return "00";
+      return st.code.replace(st.section, "");
     }
+    
+    function duplicateCount(st) {
+      return Math.max(0, qty(st.code) - 1);
+    }
+    
+    function line(st, includeQty=false) {
+      if (!includeQty) return `${st.code}`;
+    
+      const reps = duplicateCount(st);
+    
+      // Si tengo 2 en el sistema, solo 1 es repetida: ARG10
+      // Si tengo 3 en el sistema, 2 son repetidas: ARG10 (x2)
+      return reps > 1 ? `${st.code} (x${reps})` : `${st.code}`;
+    }
+    
     function buildText(filter) {
       const arr = BASE_STICKERS.filter(filter);
       const bySec = new Map();
+    
       for (const st of arr) {
         const k = `${st.section} · ${st.sectionName}`;
         if (!bySec.has(k)) bySec.set(k, []);
         bySec.get(k).push(st);
       }
+    
       if (!arr.length) return "Nada por aquí.";
+    
       return [...bySec.entries()].map(([sec, items]) => {
         return sec + "\n" + items.map(st => "• " + line(st, filter.name === "dupeFilter")).join("\n");
       }).join("\n\n");
+    }
+    
+    function buildExchangeSection(title, filter, includeRepeats=false) {
+      const arr = BASE_STICKERS.filter(filter);
+      const bySec = new Map();
+    
+      for (const st of arr) {
+        if (!bySec.has(st.section)) {
+          bySec.set(st.section, []);
+        }
+    
+        const reps = duplicateCount(st);
+        const number = stickerNumber(st);
+    
+        if (includeRepeats && reps > 1) {
+          bySec.get(st.section).push(`${number} (x${reps})`);
+        } else {
+          bySec.get(st.section).push(number);
+        }
+      }
+    
+      const lines = [...bySec.entries()].map(([sec, numbers]) => {
+        const flag = SECTION_FLAGS[sec] || "🏳️";
+        return `${sec} ${flag}: ${numbers.join(", ")}`;
+      });
+    
+      return `${title}:\n${lines.length ? lines.join("\n") : "Nada por aquí."}`;
+    }
+    
+    function buildExchangeText() {
+      return `FiguApp
+    
+    ${buildExchangeSection("REPETIDAS", dupeFilter, true)}
+    
+    ${buildExchangeSection("ME FALTAN", missingFilter, false)}`;
     }
     function missingFilter(st) { return qty(st.code) === 0; }
     function ownedFilter(st) { return qty(st.code) > 0; }
@@ -641,8 +719,7 @@
       btn.addEventListener("click", () => copyText($(btn.dataset.copy).value));
     });
     $("copyAllBtn").addEventListener("click", () => {
-      const summary = `MI ÁLBUM MUNDIAL 2026\n\nAVANCE: ${$("owned").textContent}/${$("total").textContent} (${$("pct").textContent})\nFALTAN: ${$("missing").textContent}\nREPETIDAS: ${$("dupes").textContent}\n\nME FALTAN\n${$("missingText").value}\n\nREPETIDAS\n${$("dupesText").value}`;
-      copyText(summary);
+      copyText(buildExchangeText());
     });
     $("exportBtn").addEventListener("click", () => {
       $("backupBox").value = JSON.stringify({ quantities, exportedAt: new Date().toISOString() });
