@@ -75,7 +75,18 @@
     
     @media (max-width: 520px) {
       .topline {
-        align-items: flex-start;
+        align-items: center;
+      }
+    
+      .brand {
+        align-items: center;
+        padding-top: 4px;
+      }
+    
+      .brand-logo {
+        width: 58px;
+        height: 58px;
+        transform: translateY(5px);
       }
     
       .top-actions {
@@ -88,22 +99,23 @@
         padding: 8px 10px;
         font-size: 12px;
       }
-    }  
+    }
     
     h1 { margin: 0; font-size: clamp(22px, 5vw, 42px); letter-spacing: -.04em; line-height: 1; }
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       min-width: 0;
     }
     
     .brand-logo {
-      width: 42px;
-      height: 42px;
+      width: 54px;
+      height: 54px;
       object-fit: contain;
       flex-shrink: 0;
       filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
+      transform: translateY(4px);
     }
     
     .brand-text {
@@ -157,7 +169,10 @@
     }
     .subtitle { color: var(--muted); margin: 6px 0 0; font-size: 13px; }
     .toolbar {
-      margin-top: 14px; display: grid; grid-template-columns: 1fr; gap: 8px;
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
     }
     @media (min-width: 760px) { .toolbar { grid-template-columns: 1.1fr auto auto; align-items: center; } }
     .search, select {
@@ -503,9 +518,121 @@
             align-items: center;
           }
         }
+
+      /* Pantalla inicial / splash */
+      .splash-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:
+          radial-gradient(circle at top left, rgba(250,204,21,.16), transparent 28rem),
+          radial-gradient(circle at top right, rgba(52,211,153,.14), transparent 26rem),
+          #080b12;
+        transition: opacity .45s ease, visibility .45s ease;
+      }
+      
+      .splash-screen.hide {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      
+      .splash-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transform: translateY(-8px);
+        animation: splashEnter .55s ease both;
+      }
+      
+      .splash-logo {
+        width: 104px;
+        height: 104px;
+        object-fit: contain;
+        filter: drop-shadow(0 14px 28px rgba(0,0,0,.45));
+        animation: splashPulse 1.25s ease-in-out infinite;
+      }
+      
+      .splash-title {
+        margin-top: 14px;
+        font-size: 34px;
+        line-height: 1;
+        font-weight: 950;
+        letter-spacing: -.05em;
+        color: var(--text);
+      }
+      
+      .splash-subtitle {
+        margin-top: 6px;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: .04em;
+        color: var(--muted);
+      }
+      
+      .splash-loader {
+        width: 64px;
+        height: 5px;
+        margin-top: 18px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(255,255,255,.10);
+      }
+      
+      .splash-loader::before {
+        content: "";
+        display: block;
+        width: 45%;
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--yellow), var(--green));
+        animation: splashLoading 1s ease-in-out infinite;
+      }
+      
+      @keyframes splashEnter {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(-8px) scale(1);
+        }
+      }
+      
+      @keyframes splashPulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.045);
+        }
+      }
+      
+      @keyframes splashLoading {
+        0% {
+          transform: translateX(-120%);
+        }
+        100% {
+          transform: translateX(230%);
+        }
+      }
       </style>
 </head>
 <body>
+  <div id="splashScreen" class="splash-screen" aria-label="FIGUAPP">
+    <div class="splash-content">
+      <img src="logobase.png" alt="FIGUAPP" class="splash-logo" />
+      <div class="splash-title">FIGUAPP</div>
+      <div class="splash-subtitle">by @mikehuaman</div>
+      <div class="splash-loader"></div>
+    </div>
+  </div>
+
   <div class="app">
     <header class="hero">
       <div class="hero-inner">
@@ -1094,6 +1221,17 @@
     
           localStorage.setItem(IOS_INSTALL_DISMISSED_KEY, "true");
         }
+
+        function hideSplashScreen() {
+          const splash = $("splashScreen");
+          if (!splash) return;
+        
+          splash.classList.add("hide");
+        
+          setTimeout(() => {
+            splash.remove();
+          }, 500);
+        }
     
         window.addEventListener("load", () => {
           const closeBtn = $("closeIosInstall");
@@ -1135,11 +1273,17 @@
             });
           }
           
-          if (shouldShowIOSInstallGuide()) {
-            setTimeout(showIOSInstallGuide, 700);
-          } else {
-            setTimeout(showBackupReminder, 700);
-          }
+            setTimeout(() => {
+            hideSplashScreen();
+          
+            setTimeout(() => {
+              if (shouldShowIOSInstallGuide()) {
+                showIOSInstallGuide();
+              } else {
+                showBackupReminder();
+              }
+            }, 450);
+          }, 1100);
         });
     
         render();
