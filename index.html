@@ -309,7 +309,110 @@
     .hidden { display:none !important; }
         .footer-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
         .small-note { color: var(--muted); font-size: 12px; line-height:1.35; margin-top:8px; }
-    
+
+      /* Aviso flotante de respaldo */
+      .backup-reminder-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9998;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px 12px calc(18px + env(safe-area-inset-bottom));
+        background: rgba(0, 0, 0, .58);
+        backdrop-filter: blur(14px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .24s ease;
+      }
+      
+      .backup-reminder-overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      
+      .backup-reminder-card {
+        width: min(100%, 430px);
+        padding: 20px 16px 16px;
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at top left, rgba(250, 204, 21, .16), transparent 18rem),
+          radial-gradient(circle at top right, rgba(52, 211, 153, .13), transparent 18rem),
+          rgba(8, 11, 18, .97);
+        border: 1px solid rgba(255, 255, 255, .13);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, .58);
+        transform: scale(.96) translateY(14px);
+        transition: transform .28s cubic-bezier(.2, .9, .2, 1);
+        text-align: center;
+      }
+      
+      .backup-reminder-overlay.show .backup-reminder-card {
+        transform: scale(1) translateY(0);
+      }
+      
+      .backup-reminder-logo {
+        width: 74px;
+        height: 74px;
+        object-fit: contain;
+        margin: 0 auto 10px;
+        display: block;
+        filter: drop-shadow(0 8px 18px rgba(0,0,0,.42));
+      }
+      
+      .backup-reminder-title {
+        margin: 0;
+        font-size: 23px;
+        line-height: 1.05;
+        letter-spacing: -.04em;
+        font-weight: 950;
+      }
+      
+      .backup-reminder-text {
+        margin: 10px 0 0;
+        color: #cbd5e1;
+        font-size: 13px;
+        line-height: 1.45;
+        font-weight: 650;
+      }
+      
+      .backup-reminder-steps {
+        margin: 14px 0 0;
+        padding: 12px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid rgba(255, 255, 255, .10);
+        text-align: left;
+        color: #e5e7eb;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      
+      .backup-reminder-steps strong {
+        color: var(--yellow);
+      }
+      
+      .backup-reminder-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      
+      .backup-reminder-actions .btn {
+        width: 100%;
+      }
+      
+      .backup-reminder-later {
+        background: rgba(255,255,255,.07);
+        color: var(--text);
+        border-color: var(--line);
+      }
+      
+      @media (min-width: 420px) {
+        .backup-reminder-actions {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
         /* Guía de instalación iPhone / Safari */
         .ios-install-overlay {
           position: fixed;
@@ -459,20 +562,6 @@
 
     <section class="panel" id="sections"></section>
 
-    <section class="lists">
-      <div class="list-card">
-        <div class="list-head"><div class="list-title">Me faltan</div></div>
-        <textarea id="missingText" readonly></textarea>
-      </div>
-      <div class="list-card">
-        <div class="list-head"><div class="list-title">Tengo</div></div>
-        <textarea id="ownedText" readonly></textarea>
-      </div>
-      <div class="list-card">
-        <div class="list-head"><div class="list-title">Repetidas</div></div>
-        <textarea id="dupesText" readonly></textarea>
-      </div>
-    </section>
 
     <section class="list-card" style="margin-top:12px;">
       <div class="list-head"><div class="list-title">Respaldo / migrar al celular</div></div>
@@ -487,6 +576,28 @@
   </div>
 
   <div id="toast" class="toast">Copiado</div>
+  <div id="backupReminderOverlay" class="backup-reminder-overlay" aria-hidden="true">
+    <div class="backup-reminder-card" role="dialog" aria-modal="true" aria-label="Recordatorio de respaldo">
+      <img src="logobase.png" alt="FIGUAPP" class="backup-reminder-logo" />
+  
+      <h2 class="backup-reminder-title">Haz una copia de seguridad</h2>
+  
+      <p class="backup-reminder-text">
+        Para que tus figuritas no se pierdan, recomendamos guardar un respaldo cada cierto tiempo.
+      </p>
+  
+      <div class="backup-reminder-steps">
+        <div><strong>1.</strong> Presiona <strong>Exportar respaldo</strong>.</div>
+        <div><strong>2.</strong> La app copiará un texto con todos tus datos.</div>
+        <div><strong>3.</strong> Pega ese texto en Notas, WhatsApp, Telegram o cualquier bloc de notas.</div>
+      </div>
+  
+      <div class="backup-reminder-actions">
+        <button class="btn primary" id="goBackupBtn">Hacer respaldo</button>
+        <button class="btn backup-reminder-later" id="closeBackupReminderBtn">Luego lo hago</button>
+      </div>
+    </div>
+  </div>
   
   <div id="iosInstallOverlay" class="ios-install-overlay" aria-hidden="true">
     <div class="ios-install-sheet" role="dialog" aria-modal="true" aria-label="Instalar FIGUAPP en iPhone">
@@ -723,7 +834,6 @@
         sections.appendChild(details);
       }
       updateStats();
-      updateLists();
     }
 
     function card(st) {
@@ -770,11 +880,7 @@
       $("pct").textContent = pct + "%";
       $("bar").style.width = pct + "%";
     }
-    function updateLists() {
-      $("missingText").value = buildText(missingFilter);
-      $("ownedText").value = buildText(ownedFilter);
-      $("dupesText").value = buildText(dupeFilter);
-    }
+
     function showToast(msg="Copiado") {
       const t = $("toast");
       t.textContent = msg;
@@ -832,10 +938,22 @@
     $("copyAllBtn").addEventListener("click", () => {
       copyText(buildExchangeText());
     });
-    $("exportBtn").addEventListener("click", () => {
+    $("exportBtn").addEventListener("click", async () => {
       $("backupBox").value = JSON.stringify({ quantities, exportedAt: new Date().toISOString() });
       $("backupBox").select();
-      copyText($("backupBox").value);
+    
+      try {
+        await navigator.clipboard.writeText($("backupBox").value);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = $("backupBox").value;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+    
+      showBackupCopiedReminder();
     });
     $("importBtn").addEventListener("click", () => {
       try {
@@ -853,7 +971,50 @@
           saveQuantities();
           render();
         });
+
+        /* Aviso de respaldo al iniciar */
+    function showBackupReminder() {
+      const overlay = $("backupReminderOverlay");
+      if (!overlay) return;
     
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+    }
+    
+    function hideBackupReminder() {
+      const overlay = $("backupReminderOverlay");
+      if (!overlay) return;
+    
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+    
+    function goToBackupSection() {
+      hideBackupReminder();
+    
+      const exportBtn = $("exportBtn");
+    
+      if (exportBtn) {
+        exportBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+    
+        setTimeout(() => {
+          exportBtn.classList.add("primary");
+    
+          setTimeout(() => {
+            exportBtn.classList.remove("primary");
+          }, 1600);
+        }, 500);
+      }
+    }
+    
+    function showBackupCopiedReminder() {
+      const message = "Respaldo copiado ✅ Ahora pégalo en Notas, WhatsApp, Telegram o cualquier app de mensajes para conservar tu copia de seguridad.";
+      showToast(message);
+    
+      setTimeout(() => {
+        alert("✅ Respaldo copiado\n\nAhora pega este texto en Notas, WhatsApp, Telegram o cualquier app de mensajes. Así tendrás una copia de seguridad por si cambias de celular, navegador o se borran los datos.");
+      }, 250);
+    }
         /* Mostrar guía de instalación solo en iPhone + Safari */
         const IOS_INSTALL_DISMISSED_KEY = "figuapp_ios_install_dismissed_v1";
     
@@ -903,18 +1064,33 @@
           const closeBtn = $("closeIosInstall");
           const continueBtn = $("continueWebBtn");
           const overlay = $("iosInstallOverlay");
-    
+          
+          const closeBackupBtn = $("closeBackupReminderBtn");
+          const goBackupBtn = $("goBackupBtn");
+          const backupOverlay = $("backupReminderOverlay");
+          
           if (closeBtn) closeBtn.addEventListener("click", hideIOSInstallGuide);
           if (continueBtn) continueBtn.addEventListener("click", hideIOSInstallGuide);
-    
+          
           if (overlay) {
             overlay.addEventListener("click", (e) => {
               if (e.target === overlay) hideIOSInstallGuide();
             });
           }
-    
+          
+          if (closeBackupBtn) closeBackupBtn.addEventListener("click", hideBackupReminder);
+          if (goBackupBtn) goBackupBtn.addEventListener("click", goToBackupSection);
+          
+          if (backupOverlay) {
+            backupOverlay.addEventListener("click", (e) => {
+              if (e.target === backupOverlay) hideBackupReminder();
+            });
+          }
+          
           if (shouldShowIOSInstallGuide()) {
             setTimeout(showIOSInstallGuide, 700);
+          } else {
+            setTimeout(showBackupReminder, 700);
           }
         });
     
