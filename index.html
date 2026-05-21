@@ -210,9 +210,27 @@
       min-height: 42px;
       padding: 0;
       border-radius: 50%;
-      font-size: 20px;
-      font-weight: 900;
-      line-height: 1;
+    }
+    
+    .arrow-btn {
+      position: relative;
+    }
+    
+    .arrow-btn span {
+      width: 14px;
+      height: 14px;
+      border-right: 5px solid currentColor;
+      border-bottom: 5px solid currentColor;
+      border-radius: 2px;
+      display: block;
+    }
+    
+    .arrow-down span {
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+    
+    .arrow-up span {
+      transform: rotate(225deg) translate(-1px, -1px);
     }
     
     /* Abrir secciones: mismo botón, pero invertido */
@@ -669,8 +687,13 @@
               <option value="duplicates">Solo repetidas</option>
             </select>
           
-            <button class="btn circle-btn" id="openAll" aria-label="Abrir secciones">⌄</button>
-            <button class="btn circle-btn" id="closeAll" aria-label="Cerrar secciones">⌃</button>
+            <button class="btn circle-btn arrow-btn arrow-down" id="openAll" aria-label="Abrir secciones">
+              <span></span>
+            </button>
+            
+            <button class="btn circle-btn arrow-btn arrow-up" id="closeAll" aria-label="Cerrar secciones">
+              <span></span>
+            </button>
           </div>
         </div>
       </div>
