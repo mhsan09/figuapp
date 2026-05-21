@@ -598,6 +598,27 @@
       </div>
     </div>
   </div>
+
+      <div id="backupCopiedOverlay" class="backup-reminder-overlay" aria-hidden="true">
+      <div class="backup-reminder-card" role="dialog" aria-modal="true" aria-label="Respaldo copiado">
+        <img src="logobase.png" alt="FIGUAPP" class="backup-reminder-logo" />
+    
+        <h2 class="backup-reminder-title">Respaldo copiado ✅</h2>
+    
+        <p class="backup-reminder-text">
+          Ya tienes el respaldo copiado en el portapapeles.
+        </p>
+    
+        <div class="backup-reminder-steps">
+          <div><strong>Ahora pégalo</strong> en Notas, WhatsApp, Telegram o cualquier app de mensajes.</div>
+          <div style="margin-top:8px;">Así tendrás una copia segura si cambias de celular, navegador o se borran los datos.</div>
+        </div>
+    
+        <div class="backup-reminder-actions">
+          <button class="btn primary" id="closeBackupCopiedBtn">Entendido</button>
+        </div>
+      </div>
+    </div>
   
   <div id="iosInstallOverlay" class="ios-install-overlay" aria-hidden="true">
     <div class="ios-install-sheet" role="dialog" aria-modal="true" aria-label="Instalar FIGUAPP en iPhone">
@@ -953,6 +974,8 @@
         ta.remove();
       }
     
+      $("backupBox").blur();
+    
       showBackupCopiedReminder();
     });
     $("importBtn").addEventListener("click", () => {
@@ -1008,12 +1031,24 @@
     }
     
     function showBackupCopiedReminder() {
-      const message = "Respaldo copiado ✅ Ahora pégalo en Notas, WhatsApp, Telegram o cualquier app de mensajes para conservar tu copia de seguridad.";
-      showToast(message);
+      hideBackupReminder();
+      showToast("Copiado");
     
       setTimeout(() => {
-        alert("✅ Respaldo copiado\n\nAhora pega este texto en Notas, WhatsApp, Telegram o cualquier app de mensajes. Así tendrás una copia de seguridad por si cambias de celular, navegador o se borran los datos.");
+        const overlay = $("backupCopiedOverlay");
+        if (!overlay) return;
+    
+        overlay.classList.add("show");
+        overlay.setAttribute("aria-hidden", "false");
       }, 250);
+    }
+    
+    function hideBackupCopiedReminder() {
+      const overlay = $("backupCopiedOverlay");
+      if (!overlay) return;
+    
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
     }
         /* Mostrar guía de instalación solo en iPhone + Safari */
         const IOS_INSTALL_DISMISSED_KEY = "figuapp_ios_install_dismissed_v1";
@@ -1069,6 +1104,9 @@
           const goBackupBtn = $("goBackupBtn");
           const backupOverlay = $("backupReminderOverlay");
           
+          const closeBackupCopiedBtn = $("closeBackupCopiedBtn");
+          const backupCopiedOverlay = $("backupCopiedOverlay");
+          
           if (closeBtn) closeBtn.addEventListener("click", hideIOSInstallGuide);
           if (continueBtn) continueBtn.addEventListener("click", hideIOSInstallGuide);
           
@@ -1084,6 +1122,16 @@
           if (backupOverlay) {
             backupOverlay.addEventListener("click", (e) => {
               if (e.target === backupOverlay) hideBackupReminder();
+            });
+          }
+
+          if (closeBackupCopiedBtn) {
+            closeBackupCopiedBtn.addEventListener("click", hideBackupCopiedReminder);
+          }
+          
+          if (backupCopiedOverlay) {
+            backupCopiedOverlay.addEventListener("click", (e) => {
+              if (e.target === backupCopiedOverlay) hideBackupCopiedReminder();
             });
           }
           
