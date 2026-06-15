@@ -679,8 +679,8 @@
     /* Botón flotante de bloqueo de inventario */
     .lock-float-btn {
       position: fixed;
-      right: calc(22px + env(safe-area-inset-right));
-      bottom: calc(64px + env(safe-area-inset-bottom));
+      right: calc(28px + env(safe-area-inset-right));
+      bottom: calc(46px + env(safe-area-inset-bottom));
       z-index: 9997;
     
       width: 58px;
@@ -772,7 +772,7 @@
     
     /* Shake de la app al cerrar el candado */
     body.lock-shake .app {
-      animation: figuAppShake .42s cubic-bezier(.36,.07,.19,.97) both;
+      animation: figuAppShake .34s cubic-bezier(.36,.07,.19,.97) both;
     }
     
     @keyframes figuAppShake {
@@ -780,25 +780,25 @@
         transform: translateX(0);
       }
       12% {
-        transform: translateX(-7px);
-      }
-      24% {
-        transform: translateX(7px);
-      }
-      36% {
-        transform: translateX(-6px);
-      }
-      48% {
-        transform: translateX(6px);
-      }
-      60% {
         transform: translateX(-4px);
       }
-      72% {
+      24% {
         transform: translateX(4px);
       }
-      84% {
+      36% {
+        transform: translateX(-3px);
+      }
+      48% {
+        transform: translateX(3px);
+      }
+      60% {
         transform: translateX(-2px);
+      }
+      72% {
+        transform: translateX(2px);
+      }
+      84% {
+        transform: translateX(-1px);
       }
     }
     
@@ -806,8 +806,8 @@
       .lock-float-btn {
         width: 56px;
         height: 56px;
-        right: calc(20px + env(safe-area-inset-right));
-        bottom: calc(60px + env(safe-area-inset-bottom));
+        right: calc(28px + env(safe-area-inset-right));
+        bottom: calc(46px + env(safe-area-inset-bottom));
       }
     }
       </style>
@@ -1066,7 +1066,7 @@
     
       setTimeout(() => {
         document.body.classList.remove("lock-shake");
-      }, 480);
+      }, 380);
     }
     
     function setInventoryLocked(isLocked) {
