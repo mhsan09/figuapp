@@ -285,7 +285,7 @@
       color: #dbeafe;
       border-radius: 16px;
       padding: 12px;
-      font-size: 12px;
+      font-size: 16px;
       outline: none;
       line-height: 1.45;
     }
@@ -587,29 +587,16 @@
       </div>
     </header>
 
-    <section class="stats">
-      <div class="stat"><div class="label">Tengo</div><div class="num" id="ownedStat">0</div></div>
-      <div class="stat"><div class="label">Faltan</div><div class="num" id="missingStat">0</div></div>
-      <div class="stat"><div class="label">Repetidas</div><div class="num" id="dupesStat">0</div></div>
-      <div class="stat"><div class="label">Cartas base</div><div class="num" id="totalStat">0</div></div>
-    </section>
-
     <section class="panel" id="setupPanel">
       <h2>Zona de intercambio</h2>
       <p class="small-note">
-        Pega la lista de otra app. FiguApp detecta sus faltantes y repetidas para armar una propuesta.
+        Pega las listas de <strong>otras apps</strong>. FiguApp detecta sus faltantes y repetidas para armar una propuesta.
       </p>
 
       <div id="baseError" class="error-box hidden"></div>
 
       <div class="start-card">
-        <div class="start-icon">📋</div>
-        <h3>Leer lista externa</h3>
-        <p class="small-note">Compatible con listas de faltantes, repetidas, emojis, dos puntos o formato simple.</p>
-
-        <div class="footer-actions">
-          <button class="btn primary full" id="showPasteBtn">Pegar lista</button>
-        </div>
+        <button class="btn primary full" id="showPasteBtn">Pegar lista</button>
       </div>
 
       <div id="pastePanel" class="paste-panel hidden">
@@ -793,7 +780,6 @@
     function bindEvents() {
       $("showPasteBtn").addEventListener("click", () => {
         $("pastePanel").classList.remove("hidden");
-        $("externalListInput").focus();
       });
 
       $("analyzeListBtn").addEventListener("click", analyzeExternalList);
@@ -1043,16 +1029,6 @@
 
     function updateStats() {
       quantities = sanitizeQuantities(loadQuantities());
-
-      const total = stickers.length || 0;
-      const owned = countOwned(quantities);
-      const missing = Math.max(0, total - owned);
-      const dupes = duplicateUnits(quantities);
-
-      $("totalStat").textContent = total;
-      $("ownedStat").textContent = owned;
-      $("missingStat").textContent = missing;
-      $("dupesStat").textContent = dupes;
     }
 
     function showToast(msg = "Listo") {
