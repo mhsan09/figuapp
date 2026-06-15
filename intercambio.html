@@ -45,7 +45,11 @@
     button { cursor: pointer; }
     a { color: inherit; text-decoration: none; }
 
-    .app { max-width: 1180px; margin: 0 auto; padding: 18px 14px 90px; }
+    .app {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px 14px 90px;
+    }
 
     .hero {
       position: sticky;
@@ -55,24 +59,76 @@
       padding: calc(12px + env(safe-area-inset-top)) 14px 12px;
       background: rgba(8,11,18,.88);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--line);
     }
 
     .hero-inner { max-width: 1180px; margin: 0 auto; }
-    .topline { display:flex; align-items:center; justify-content:space-between; gap:12px; }
 
-    h1 { margin: 0; font-size: clamp(22px, 5vw, 42px); letter-spacing: -.04em; line-height: 1; }
-    h2 { margin: 0 0 8px; font-size: 18px; letter-spacing: -.02em; }
-    h3 { margin: 0; font-size: 15px; }
+    .topline {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
 
-    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .brand-logo { width: 42px; height: 42px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 4px 10px rgba(0,0,0,.35)); }
-    .brand-text { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-    .byline { color: var(--muted); margin-top: 4px; font-size: 12px; font-weight: 700; letter-spacing: .02em; }
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 5vw, 42px);
+      letter-spacing: -.04em;
+      line-height: 1;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: -.02em;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .byline {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
 
     @media (min-width: 760px) {
-      .brand-logo { width: 52px; height: 52px; }
-      .byline { font-size: 13px; }
+      .brand-logo {
+        width: 52px;
+        height: 52px;
+      }
+
+      .byline {
+        font-size: 13px;
+      }
     }
 
     .btn {
@@ -93,10 +149,29 @@
 
     .btn:hover { background: rgba(255,255,255,.11); }
     .btn:active { transform: scale(.98); }
-    .btn.primary { background: var(--yellow); color:#111827; border-color: transparent; font-weight: 900; }
-    .btn.green { background: var(--green); color:#061018; border-color: transparent; font-weight: 900; }
-    .btn.danger { color: #fecaca; border-color: rgba(248,113,113,.35); }
-    .btn.full { width: 100%; }
+
+    .btn.primary {
+      background: var(--yellow);
+      color:#111827;
+      border-color: transparent;
+      font-weight: 900;
+    }
+
+    .btn.green {
+      background: var(--green);
+      color:#061018;
+      border-color: transparent;
+      font-weight: 900;
+    }
+
+    .btn.danger {
+      color: #fecaca;
+      border-color: rgba(248,113,113,.35);
+    }
+
+    .btn.full {
+      width: 100%;
+    }
 
     .panel, .list-card {
       background: rgba(16,21,34,.72);
@@ -107,8 +182,16 @@
       margin-bottom: 12px;
     }
 
-    .small-note { color: var(--muted); font-size: 12px; line-height:1.35; margin: 8px 0 0; }
-    .hidden { display:none !important; }
+    .small-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height:1.35;
+      margin: 8px 0 0;
+    }
+
+    .hidden {
+      display:none !important;
+    }
 
     .toast {
       position: fixed;
@@ -129,31 +212,10 @@
       min-width: 120px;
     }
 
-    .toast.show { opacity:1; transform: translateX(-50%) translateY(0); }
-
-    .exchange-actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin: 12px 0 0;
+    .toast.show {
+      opacity:1;
+      transform: translateX(-50%) translateY(0);
     }
-
-    @media (min-width: 760px) {
-      .exchange-actions { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    .mode-card {
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
-      border-radius: 20px;
-      padding: 13px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-height: 150px;
-    }
-
-    .mode-card .icon { font-size: 28px; }
 
     .stats {
       display:grid;
@@ -162,7 +224,11 @@
       margin: 12px 0;
     }
 
-    @media (min-width: 760px) { .stats { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+    @media (min-width: 760px) {
+      .stats {
+        grid-template-columns: repeat(4, minmax(0,1fr));
+      }
+    }
 
     .stat {
       background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
@@ -172,64 +238,96 @@
       box-shadow: var(--shadow);
     }
 
-    .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; font-weight: 800; }
-    .num { margin-top:5px; font-size: 25px; font-weight: 900; letter-spacing: -.04em; }
+    .label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 800;
+    }
 
-    .qr-box {
-      background: rgba(255,255,255,.06);
+    .num {
+      margin-top:5px;
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    .start-card {
       border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at top left, rgba(250,204,21,.12), transparent 15rem),
+        linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
       border-radius: 22px;
       padding: 14px;
-      text-align: center;
+      margin-top: 10px;
+    }
+
+    .start-icon {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .paste-panel {
       margin-top: 12px;
-    }
-
-    .qr-holder {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-      border-radius: 18px;
-      padding: 12px;
-      width: fit-content;
-      margin: 12px auto 0;
-      min-width: 248px;
-      min-height: 248px;
-    }
-
-    .qr-holder img, .qr-holder canvas { border-radius: 8px; }
-
-    .scanner-box {
-      position: relative;
-      overflow: hidden;
-      border-radius: 22px;
       border: 1px solid var(--line);
-      background: rgba(0,0,0,.35);
+      border-radius: 22px;
       padding: 12px;
-      margin-top: 12px;
+      background: rgba(0,0,0,.18);
     }
 
-    #reader {
-      width: 100%;
-      min-height: 280px;
+    textarea {
+      width:100%;
+      min-height: 230px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      color: #dbeafe;
+      border-radius: 16px;
+      padding: 12px;
+      font-size: 12px;
+      outline: none;
+      line-height: 1.45;
+    }
+
+    textarea:focus {
+      border-color: rgba(250,204,21,.42);
+      box-shadow: 0 0 0 4px rgba(250,204,21,.08);
+    }
+
+    .footer-actions {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .parse-summary {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 760px) {
+      .parse-summary {
+        grid-template-columns: repeat(4, minmax(0,1fr));
+      }
+    }
+
+    .mini-stat {
+      border: 1px solid var(--line);
       border-radius: 18px;
-      overflow: hidden;
-      background: #030712;
-      position: relative;
+      padding: 10px;
+      background: rgba(255,255,255,.05);
     }
 
-    #reader::after {
-      content: "";
-      position: absolute;
-      inset: 50% auto auto 50%;
-      width: 230px;
-      height: 230px;
-      transform: translate(-50%, -50%);
-      border: 3px solid rgba(250,204,21,.88);
-      border-radius: 24px;
-      box-shadow: 0 0 0 999px rgba(0,0,0,.20);
-      pointer-events: none;
-      z-index: 2;
+    .mini-stat .label {
+      font-size: 10px;
+    }
+
+    .mini-stat .num {
+      font-size: 21px;
     }
 
     .trade-layout {
@@ -240,7 +338,9 @@
     }
 
     @media (min-width: 850px) {
-      .trade-layout { grid-template-columns: repeat(2, 1fr); }
+      .trade-layout {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     .tray {
@@ -251,9 +351,26 @@
       min-height: 92px;
     }
 
-    .list-head { display:flex; align-items:center; justify-content:space-between; gap: 8px; margin-bottom:8px; }
-    .list-title { font-weight:900; }
-    .pill { font-size:11px; font-weight:900; color: var(--yellow); background: rgba(250,204,21,.10); padding: 4px 8px; border-radius: 999px; }
+    .list-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 8px;
+      margin-bottom:8px;
+    }
+
+    .list-title {
+      font-weight:900;
+    }
+
+    .pill {
+      font-size:11px;
+      font-weight:900;
+      color: var(--yellow);
+      background: rgba(250,204,21,.10);
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
 
     .grid {
       display:grid;
@@ -262,9 +379,23 @@
       margin-top: 8px;
     }
 
-    @media (min-width: 420px) { .grid { grid-template-columns: repeat(4, minmax(0,1fr)); } }
-    @media (min-width: 760px) { .grid { grid-template-columns: repeat(6, minmax(0,1fr)); } }
-    @media (min-width: 1050px) { .grid { grid-template-columns: repeat(8, minmax(0,1fr)); } }
+    @media (min-width: 420px) {
+      .grid {
+        grid-template-columns: repeat(4, minmax(0,1fr));
+      }
+    }
+
+    @media (min-width: 760px) {
+      .grid {
+        grid-template-columns: repeat(6, minmax(0,1fr));
+      }
+    }
+
+    @media (min-width: 1050px) {
+      .grid {
+        grid-template-columns: repeat(8, minmax(0,1fr));
+      }
+    }
 
     .card {
       aspect-ratio: 3 / 4;
@@ -283,10 +414,27 @@
       color: #7f8797;
     }
 
-    .card.available { background: rgba(16,185,129,.10); border-color: rgba(52,211,153,.34); color: var(--green); }
-    .card.selected { outline: 2px solid rgba(250,204,21,.75); background: rgba(250,204,21,.13); color: var(--yellow); }
-    .card.receive { background: rgba(96,165,250,.11); border-color: rgba(96,165,250,.34); color: #93c5fd; }
-    .card.receive.selected { outline: 2px solid rgba(96,165,250,.85); }
+    .card.available {
+      background: rgba(16,185,129,.10);
+      border-color: rgba(52,211,153,.34);
+      color: var(--green);
+    }
+
+    .card.selected {
+      outline: 2px solid rgba(250,204,21,.75);
+      background: rgba(250,204,21,.13);
+      color: var(--yellow);
+    }
+
+    .card.receive {
+      background: rgba(96,165,250,.11);
+      border-color: rgba(96,165,250,.34);
+      color: #93c5fd;
+    }
+
+    .card.receive.selected {
+      outline: 2px solid rgba(96,165,250,.85);
+    }
 
     .badge {
       position:absolute;
@@ -300,9 +448,28 @@
       padding: 2px 6px;
     }
 
-    .badge.blue { background: var(--blue); color: #061018; }
-    .code { font-size: 17px; font-weight: 950; letter-spacing: -.03em; }
-    .name { margin-top:6px; padding:0 6px; width:100%; font-size:10px; color: #a8b1c2; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-height: 14px; }
+    .badge.blue {
+      background: var(--blue);
+      color: #061018;
+    }
+
+    .code {
+      font-size: 17px;
+      font-weight: 950;
+      letter-spacing: -.03em;
+    }
+
+    .name {
+      margin-top:6px;
+      padding:0 6px;
+      width:100%;
+      font-size:10px;
+      color: #a8b1c2;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      min-height: 14px;
+    }
 
     .card-action {
       position:absolute;
@@ -316,7 +483,12 @@
       color: #f8fafc;
     }
 
-    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
 
     .chip {
       border: 1px solid var(--line);
@@ -331,11 +503,31 @@
       gap: 6px;
     }
 
-    .chip.give { color: #bbf7d0; border-color: rgba(52,211,153,.28); }
-    .chip.receive { color: #bfdbfe; border-color: rgba(96,165,250,.28); }
-    .chip button { border: 0; background: transparent; color: inherit; font-weight: 950; padding: 0; }
+    .chip.give {
+      color: #bbf7d0;
+      border-color: rgba(52,211,153,.28);
+    }
 
-    .footer-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .chip.receive {
+      color: #bfdbfe;
+      border-color: rgba(96,165,250,.28);
+    }
+
+    .chip button {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font-weight: 950;
+      padding: 0;
+    }
+
+    .request-box {
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 14px;
+      margin-top: 12px;
+    }
 
     .error-box {
       background: rgba(248,113,113,.10);
@@ -348,16 +540,31 @@
       font-size: 13px;
     }
 
-    textarea {
-      width:100%;
-      min-height: 90px;
-      resize: vertical;
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,.22);
-      color: #dbeafe;
-      border-radius: 14px;
-      padding: 10px;
-      font-size: 12px;
+    .ok-box {
+      background: rgba(52,211,153,.10);
+      border: 1px solid rgba(52,211,153,.30);
+      color: #bbf7d0;
+      border-radius: 18px;
+      padding: 12px;
+      margin-top: 12px;
+      line-height: 1.4;
+      font-size: 13px;
+    }
+
+    @media (max-width: 520px) {
+      .topline {
+        align-items: center;
+      }
+
+      .btn {
+        padding: 9px 11px;
+        font-size: 12px;
+      }
+
+      .brand-logo {
+        width: 46px;
+        height: 46px;
+      }
     }
   </style>
 </head>
@@ -374,6 +581,7 @@
               <div class="byline">ALBUM 2026 · by @mikehuaman</div>
             </div>
           </div>
+
           <a class="btn primary" href="index.html">Volver</a>
         </div>
       </div>
@@ -389,51 +597,45 @@
     <section class="panel" id="setupPanel">
       <h2>Zona de intercambio</h2>
       <p class="small-note">
-        Flujo pensado para dos personas: el sujeto B muestra su QR, el sujeto A lo escanea, selecciona qué entrega y qué recibe, registra su cambio y luego muestra un QR final para que el sujeto B actualice su propia lista.
+        Pega la lista de otra app. FiguApp detecta sus faltantes y repetidas para armar una propuesta.
       </p>
 
       <div id="baseError" class="error-box hidden"></div>
 
-      <div class="exchange-actions">
-        <div class="mode-card">
-          <div class="icon">📱</div>
-          <h3>Mostrar mi QR</h3>
-          <p class="small-note">Úsalo cuando tú seas el sujeto B. La otra persona podrá escanear tus repetidas y faltantes.</p>
-          <button class="btn primary full" id="myQrBtn">Enseñar QR</button>
-        </div>
+      <div class="start-card">
+        <div class="start-icon">📋</div>
+        <h3>Leer lista externa</h3>
+        <p class="small-note">Compatible con listas de faltantes, repetidas, emojis, dos puntos o formato simple.</p>
 
-        <div class="mode-card">
-          <div class="icon">📷</div>
-          <h3>Escanear QR</h3>
-          <p class="small-note">Úsalo cuando tú seas el sujeto A. Escanea el QR de la otra persona y arma el intercambio.</p>
-          <button class="btn full" id="scanFriendBtn">Escanear QR</button>
-        </div>
-      </div>
-
-      <div id="myQrPanel" class="qr-box hidden">
-        <h2>Mi QR de intercambio</h2>
-        <p class="small-note">Este QR contiene tu estado actual de cartas. No modifica nada por sí solo.</p>
-        <div id="myQr" class="qr-holder"></div>
-        <div class="footer-actions" style="justify-content:center;">
-          <button class="btn green" id="scanTradeResultBtn">Efectuar cambio recibido</button>
-          <button class="btn" id="refreshQrBtn">Actualizar QR</button>
-        </div>
-        <p class="small-note">Después de que la otra persona efectúe el cambio, escanea aquí el QR final que te muestre para actualizar tu lista.</p>
-      </div>
-
-      <div id="scannerPanel" class="scanner-box hidden">
-        <h2 id="scannerTitle">Escanear QR</h2>
-        <div id="reader"></div>
         <div class="footer-actions">
-          <button class="btn danger" id="stopScannerBtn">Cerrar cámara</button>
+          <button class="btn primary full" id="showPasteBtn">Pegar lista</button>
         </div>
+      </div>
+
+      <div id="pastePanel" class="paste-panel hidden">
+        <textarea id="externalListInput" placeholder="Pega aquí la lista de la otra persona..."></textarea>
+
+        <div class="footer-actions">
+          <button class="btn primary" id="analyzeListBtn">Analizar lista</button>
+          <button class="btn danger" id="clearListBtn">Limpiar</button>
+        </div>
+
+        <div id="parseSummary" class="parse-summary hidden">
+          <div class="mini-stat"><div class="label">Le faltan</div><div class="num" id="parsedMissingStat">0</div></div>
+          <div class="mini-stat"><div class="label">Repetidas</div><div class="num" id="parsedDupesStat">0</div></div>
+          <div class="mini-stat"><div class="label">Te sirve</div><div class="num" id="parsedReceiveStat">0</div></div>
+          <div class="mini-stat"><div class="label">Le sirve</div><div class="num" id="parsedGiveStat">0</div></div>
+        </div>
+
+        <div id="parseWarning" class="error-box hidden"></div>
+        <div id="parseOk" class="ok-box hidden">Lista leída correctamente.</div>
       </div>
     </section>
 
     <section id="comparisonPanel" class="panel hidden">
       <h2>Intercambio posible</h2>
       <p class="small-note" id="comparisonNote">
-        Selecciona qué cartas quieres entregar y qué cartas quieres recibir. Puedes cambiar varias por una sola.
+        Selecciona las figuritas para preparar el mensaje.
       </p>
 
       <div class="trade-layout">
@@ -442,7 +644,7 @@
             <div class="list-title">Puedes entregar</div>
             <span class="pill" id="giveCount">0</span>
           </div>
-          <p class="small-note">Son tus repetidas que a la otra persona le faltan.</p>
+          <p class="small-note">Tus repetidas que a la otra persona le faltan.</p>
           <div id="giveList" class="grid"></div>
         </div>
 
@@ -451,71 +653,132 @@
             <div class="list-title">Puedes recibir</div>
             <span class="pill" id="receiveCount">0</span>
           </div>
-          <p class="small-note">Son sus repetidas que a ti te faltan.</p>
+          <p class="small-note">Sus repetidas que a ti te faltan.</p>
           <div id="receiveList" class="grid"></div>
         </div>
       </div>
 
       <div class="trade-layout">
         <div class="tray">
-          <div class="list-title">Bandeja: entregar</div>
+          <div class="list-title">Bandeja: yo entrego</div>
           <div id="giveTray" class="small-note">Nada seleccionado.</div>
         </div>
 
         <div class="tray">
-          <div class="list-title">Bandeja: recibir</div>
+          <div class="list-title">Bandeja: me entregan</div>
           <div id="receiveTray" class="small-note">Nada seleccionado.</div>
         </div>
       </div>
 
-      <div class="footer-actions">
-        <button class="btn primary" id="applyTradeBtn">Efectuar cambios</button>
-        <button class="btn danger" id="clearSelectionBtn">Limpiar selección</button>
+      <div class="request-box">
+        <h2>Solicitud</h2>
+        <p class="small-note">Esto no cambia tu álbum. Solo copia el mensaje para enviarlo.</p>
+
+        <div class="footer-actions">
+          <button class="btn primary" id="copyRequestBtn">Solicitar intercambio</button>
+          <button class="btn danger" id="clearSelectionBtn">Limpiar selección</button>
+        </div>
       </div>
     </section>
-
-    <section id="resultPanel" class="qr-box hidden">
-      <h2>QR final para la otra persona</h2>
-      <p class="small-note">
-        Tu lista ya fue actualizada. Ahora pídele a tu compañero que escanee este QR para efectuar el cambio en su propio álbum.
-      </p>
-      <div id="resultQr" class="qr-holder"></div>
-      <p class="small-note" id="resultSummary"></p>
-    </section>
-
   </div>
 
   <div id="toast" class="toast">Listo</div>
 
   <script src="album-data.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
   <script>
     const STORAGE_KEY = "mi_album_mundial_2026_v1";
-    const PROFILE_KEY = "mi_album_mundial_2026_profile_id_v1";
-
     const $ = (id) => document.getElementById(id);
 
     let stickers = [];
     let quantities = loadQuantities();
-    let profileId = loadProfileId();
-    let friendProfile = null;
-    let friendQuantities = {};
+
+    let externalMissing = {};
+    let externalDupes = {};
     let selectedGive = {};
     let selectedReceive = {};
-    let scanner = null;
-    let scannerMode = "friend-profile";
-    let lastResultPayload = "";
+
+    let codeLookup = new Map();
+    let orderLookup = new Map();
 
     const SECTION_FLAGS = {
-      "00": "✨", "FWC": "🏆", "MEX": "🇲🇽", "RSA": "🇿🇦", "KOR": "🇰🇷", "CZE": "🇨🇿", "CAN": "🇨🇦", "BIH": "🇧🇦", "QAT": "🇶🇦", "SUI": "🇨🇭", "BRA": "🇧🇷", "MAR": "🇲🇦", "HAI": "🇭🇹", "SCO": "🏴", "USA": "🇺🇸", "PAR": "🇵🇾", "AUS": "🇦🇺", "TUR": "🇹🇷", "GER": "🇩🇪", "CUW": "🇨🇼", "CIV": "🇨🇮", "ECU": "🇪🇨", "NED": "🇳🇱", "JPN": "🇯🇵", "SWE": "🇸🇪", "TUN": "🇹🇳", "BEL": "🇧🇪", "EGY": "🇪🇬", "IRN": "🇮🇷", "NZL": "🇳🇿", "ESP": "🇪🇸", "CPV": "🇨🇻", "KSA": "🇸🇦", "URU": "🇺🇾", "FRA": "🇫🇷", "SEN": "🇸🇳", "IRQ": "🇮🇶", "NOR": "🇳🇴", "ARG": "🇦🇷", "ALG": "🇩🇿", "AUT": "🇦🇹", "JOR": "🇯🇴", "POR": "🇵🇹", "COD": "🇨🇩", "UZB": "🇺🇿", "COL": "🇨🇴", "ENG": "🏴", "CRO": "🇭🇷", "GHA": "🇬🇭", "PAN": "🇵🇦"
+      "00": "✨",
+      "FWC": "🏆",
+      "MEX": "🇲🇽",
+      "RSA": "🇿🇦",
+      "KOR": "🇰🇷",
+      "CZE": "🇨🇿",
+      "CAN": "🇨🇦",
+      "BIH": "🇧🇦",
+      "QAT": "🇶🇦",
+      "SUI": "🇨🇭",
+      "BRA": "🇧🇷",
+      "MAR": "🇲🇦",
+      "HAI": "🇭🇹",
+      "SCO": "🏴",
+      "USA": "🇺🇸",
+      "PAR": "🇵🇾",
+      "AUS": "🇦🇺",
+      "TUR": "🇹🇷",
+      "GER": "🇩🇪",
+      "CUW": "🇨🇼",
+      "CIV": "🇨🇮",
+      "ECU": "🇪🇨",
+      "NED": "🇳🇱",
+      "JPN": "🇯🇵",
+      "SWE": "🇸🇪",
+      "TUN": "🇹🇳",
+      "BEL": "🇧🇪",
+      "EGY": "🇪🇬",
+      "IRN": "🇮🇷",
+      "NZL": "🇳🇿",
+      "ESP": "🇪🇸",
+      "CPV": "🇨🇻",
+      "KSA": "🇸🇦",
+      "URU": "🇺🇾",
+      "FRA": "🇫🇷",
+      "SEN": "🇸🇳",
+      "IRQ": "🇮🇶",
+      "NOR": "🇳🇴",
+      "ARG": "🇦🇷",
+      "ALG": "🇩🇿",
+      "AUT": "🇦🇹",
+      "JOR": "🇯🇴",
+      "POR": "🇵🇹",
+      "COD": "🇨🇩",
+      "UZB": "🇺🇿",
+      "COL": "🇨🇴",
+      "ENG": "🏴",
+      "CRO": "🇭🇷",
+      "GHA": "🇬🇭",
+      "PAN": "🇵🇦",
+      "CC": "🥤"
     };
+
+    const DEFAULT_CC_STICKERS = [
+      { id: 982, code: "CC1", name: "LY", section: "CC", sectionName: "Bebidas" },
+      { id: 983, code: "CC2", name: "JK", section: "CC", sectionName: "Bebidas" },
+      { id: 984, code: "CC3", name: "HK", section: "CC", sectionName: "Bebidas" },
+      { id: 985, code: "CC4", name: "SG", section: "CC", sectionName: "Bebidas" },
+      { id: 986, code: "CC5", name: "JG", section: "CC", sectionName: "Bebidas" },
+      { id: 987, code: "CC6", name: "FV", section: "CC", sectionName: "Bebidas" },
+      { id: 988, code: "CC7", name: "JL", section: "CC", sectionName: "Bebidas" },
+      { id: 989, code: "CC8", name: "EV", section: "CC", sectionName: "Bebidas" },
+      { id: 990, code: "CC9", name: "GM", section: "CC", sectionName: "Bebidas" },
+      { id: 991, code: "CC10", name: "VVD", section: "CC", sectionName: "Bebidas" },
+      { id: 992, code: "CC11", name: "AD", section: "CC", sectionName: "Bebidas" },
+      { id: 993, code: "CC12", name: "EM", section: "CC", sectionName: "Bebidas" },
+      { id: 994, code: "CC13", name: "RJ", section: "CC", sectionName: "Bebidas" },
+      { id: 995, code: "CC14", name: "LM", section: "CC", sectionName: "Bebidas" }
+    ];
 
     init();
 
     async function init() {
       stickers = await loadBaseStickers();
+      stickers = ensureRequiredStickers(stickers);
+      buildLookups();
+
       if (!stickers.length) {
         showBaseError();
         updateStats();
@@ -528,43 +791,55 @@
     }
 
     function bindEvents() {
-      $("myQrBtn").addEventListener("click", showMyQr);
-      $("refreshQrBtn").addEventListener("click", showMyQr);
-
-      $("scanFriendBtn").addEventListener("click", () => {
-        scannerMode = "friend-profile";
-        startScanner("Escanear QR de la otra persona");
+      $("showPasteBtn").addEventListener("click", () => {
+        $("pastePanel").classList.remove("hidden");
+        $("externalListInput").focus();
       });
 
-      $("scanTradeResultBtn").addEventListener("click", () => {
-        scannerMode = "trade-result";
-        startScanner("Escanear QR final del cambio");
+      $("analyzeListBtn").addEventListener("click", analyzeExternalList);
+
+      $("clearListBtn").addEventListener("click", () => {
+        $("externalListInput").value = "";
+        externalMissing = {};
+        externalDupes = {};
+        selectedGive = {};
+        selectedReceive = {};
+        $("comparisonPanel").classList.add("hidden");
+        $("parseSummary").classList.add("hidden");
+        $("parseWarning").classList.add("hidden");
+        $("parseOk").classList.add("hidden");
+        showToast("Limpio");
       });
 
-      $("stopScannerBtn").addEventListener("click", stopScanner);
-      $("applyTradeBtn").addEventListener("click", applySelectedTrade);
       $("clearSelectionBtn").addEventListener("click", () => {
         selectedGive = {};
         selectedReceive = {};
         renderComparison();
+        showToast("Selección limpia");
       });
+
+      $("copyRequestBtn").addEventListener("click", copyRequestMessage);
     }
 
     async function loadBaseStickers() {
       try {
         if (typeof BASE_STICKERS !== "undefined" && Array.isArray(BASE_STICKERS)) {
-          return BASE_STICKERS;
+          return BASE_STICKERS.slice();
         }
       } catch {}
 
       try {
         const response = await fetch("index.html", { cache: "no-store" });
         if (!response.ok) return [];
+
         const html = await response.text();
         const arrText = extractBaseArrayFromIndex(html);
         if (!arrText) return [];
-        const parsed = JSON.parse(arrText);
-        return Array.isArray(parsed) ? parsed : [];
+
+        const base = JSON.parse(arrText);
+        const pushed = extractPushItemsFromIndex(html);
+
+        return Array.isArray(base) ? base.concat(pushed) : [];
       } catch {
         return [];
       }
@@ -587,9 +862,21 @@
         const ch = text[i];
 
         if (inString) {
-          if (escaped) { escaped = false; continue; }
-          if (ch === "\\") { escaped = true; continue; }
-          if (ch === quote) { inString = false; quote = ""; }
+          if (escaped) {
+            escaped = false;
+            continue;
+          }
+
+          if (ch === "\\") {
+            escaped = true;
+            continue;
+          }
+
+          if (ch === quote) {
+            inString = false;
+            quote = "";
+          }
+
           continue;
         }
 
@@ -602,16 +889,113 @@
         if (ch === "[") depth++;
         if (ch === "]") depth--;
 
-        if (depth === 0) return text.slice(bracketStart, i + 1);
+        if (depth === 0) {
+          return text.slice(bracketStart, i + 1);
+        }
       }
 
       return null;
     }
 
+    function extractPushItemsFromIndex(text) {
+      const items = [];
+      const marker = "BASE_STICKERS.push";
+      let searchFrom = 0;
+
+      while (true) {
+        const start = text.indexOf(marker, searchFrom);
+        if (start === -1) break;
+
+        const parenStart = text.indexOf("(", start);
+        if (parenStart === -1) break;
+
+        let depth = 0;
+        let inString = false;
+        let quote = "";
+        let escaped = false;
+
+        for (let i = parenStart; i < text.length; i++) {
+          const ch = text[i];
+
+          if (inString) {
+            if (escaped) {
+              escaped = false;
+              continue;
+            }
+
+            if (ch === "\\") {
+              escaped = true;
+              continue;
+            }
+
+            if (ch === quote) {
+              inString = false;
+              quote = "";
+            }
+
+            continue;
+          }
+
+          if (ch === '"' || ch === "'") {
+            inString = true;
+            quote = ch;
+            continue;
+          }
+
+          if (ch === "(") depth++;
+          if (ch === ")") depth--;
+
+          if (depth === 0) {
+            const inside = text.slice(parenStart + 1, i).trim();
+
+            try {
+              const parsed = Function('"use strict"; return [' + inside + '];')();
+              if (Array.isArray(parsed)) items.push(...parsed);
+            } catch {}
+
+            searchFrom = i + 1;
+            break;
+          }
+        }
+
+        if (searchFrom <= start) break;
+      }
+
+      return items;
+    }
+
+    function ensureRequiredStickers(base) {
+      const arr = Array.isArray(base) ? base.slice() : [];
+      const existing = new Set(arr.map(st => String(st.code || "").toUpperCase()));
+
+      for (const st of DEFAULT_CC_STICKERS) {
+        if (!existing.has(st.code)) {
+          arr.push(st);
+          existing.add(st.code);
+        }
+      }
+
+      return arr;
+    }
+
+    function buildLookups() {
+      codeLookup = new Map();
+      orderLookup = new Map();
+
+      stickers.forEach((st, index) => {
+        const code = String(st.code || "").toUpperCase();
+        st.code = code;
+        st.section = String(st.section || "").toUpperCase();
+
+        codeLookup.set(code, st);
+        orderLookup.set(code, index);
+      });
+    }
+
     function showBaseError() {
       const box = $("baseError");
       box.classList.remove("hidden");
-      box.innerHTML = `No pude encontrar la base de cartas. Coloca este archivo <b>intercambio.html</b> en la misma carpeta que tu <b>index.html</b>, o crea un archivo <b>album-data.js</b> con tu arreglo <b>BASE_STICKERS</b>.`;
+      box.innerHTML = `No pude encontrar la base de cartas. Coloca <b>intercambio.html</b> junto a <b>index.html</b>, o crea <b>album-data.js</b> con <b>BASE_STICKERS</b>.`;
     }
 
     function hideBaseError() {
@@ -619,35 +1003,28 @@
     }
 
     function loadQuantities() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
-    }
-
-    function saveQuantities(next = quantities) {
-      quantities = sanitizeQuantities(next);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(quantities));
-      updateStats();
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch {
+        return {};
+      }
     }
 
     function sanitizeQuantities(input) {
       const clean = {};
+
       for (const [code, value] of Object.entries(input || {})) {
+        const normalized = String(code || "").toUpperCase();
         const n = Math.max(0, Math.floor(Number(value) || 0));
-        if (n > 0) clean[String(code).toUpperCase()] = n;
+
+        if (n > 0) clean[normalized] = n;
       }
+
       return clean;
     }
 
-    function loadProfileId() {
-      let id = localStorage.getItem(PROFILE_KEY);
-      if (!id) {
-        id = "p" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
-        localStorage.setItem(PROFILE_KEY, id);
-      }
-      return id;
-    }
-
     function qtyFrom(map, code) {
-      return Number((map || {})[code] || 0);
+      return Number((map || {})[String(code || "").toUpperCase()] || 0);
     }
 
     function qty(code) {
@@ -655,14 +1032,23 @@
     }
 
     function duplicateUnits(map) {
-      return stickers.reduce((sum, st) => sum + Math.max(0, qtyFrom(map, st.code) - 1), 0);
+      return stickers.reduce((sum, st) => {
+        return sum + Math.max(0, qtyFrom(map, st.code) - 1);
+      }, 0);
+    }
+
+    function countOwned(map) {
+      return stickers.filter(st => qtyFrom(map, st.code) > 0).length;
     }
 
     function updateStats() {
+      quantities = sanitizeQuantities(loadQuantities());
+
       const total = stickers.length || 0;
-      const owned = stickers.filter(st => qty(st.code) > 0).length;
+      const owned = countOwned(quantities);
       const missing = Math.max(0, total - owned);
       const dupes = duplicateUnits(quantities);
+
       $("totalStat").textContent = total;
       $("ownedStat").textContent = owned;
       $("missingStat").textContent = missing;
@@ -673,11 +1059,298 @@
       const t = $("toast");
       t.textContent = msg;
       t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 1600);
+
+      setTimeout(() => {
+        t.classList.remove("show");
+      }, 1600);
     }
 
     function smallVibration() {
       if ("vibrate" in navigator) navigator.vibrate(12);
+    }
+
+    function stripAccents(str) {
+      return String(str || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function detectMode(line) {
+      const s = stripAccents(line)
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+
+      if (/(^|\b)(repetidas|repetidos|repes|duplicadas|duplicados|sobrantes|sobran)(\b|$)/.test(s)) {
+        return "dupes";
+      }
+
+      if (/(^|\b)(me faltan|faltantes|faltan|faltas|necesito|busco)(\b|$)/.test(s)) {
+        return "missing";
+      }
+
+      return null;
+    }
+
+    function analyzeExternalList() {
+      if (!stickers.length) {
+        showBaseError();
+        return;
+      }
+
+      const text = $("externalListInput").value.trim();
+
+      if (!text) {
+        alert("Pega primero la lista de la otra persona.");
+        return;
+      }
+
+      const parsed = parseExternalList(text);
+
+      externalMissing = parsed.missing;
+      externalDupes = parsed.dupes;
+      selectedGive = {};
+      selectedReceive = {};
+
+      const missingCount = Object.keys(externalMissing).length;
+      const dupesCount = Object.keys(externalDupes).length;
+
+      if (!missingCount && !dupesCount) {
+        $("parseOk").classList.add("hidden");
+        $("parseSummary").classList.add("hidden");
+        $("comparisonPanel").classList.add("hidden");
+        $("parseWarning").classList.remove("hidden");
+        $("parseWarning").textContent = "No pude detectar faltantes ni repetidas. Revisa que la lista tenga secciones como “Me faltan”, “Faltantes” o “Repetidas”.";
+        return;
+      }
+
+      renderComparison();
+
+      $("parseSummary").classList.remove("hidden");
+      $("parseOk").classList.remove("hidden");
+
+      $("parsedMissingStat").textContent = missingCount;
+      $("parsedDupesStat").textContent = dupesCount;
+      $("parsedGiveStat").textContent = getCanGive().length;
+      $("parsedReceiveStat").textContent = getCanReceive().length;
+
+      if (parsed.unknownLines.length) {
+        $("parseWarning").classList.remove("hidden");
+        $("parseWarning").textContent = `Se ignoraron ${parsed.unknownLines.length} línea(s) sin formato compatible.`;
+      } else {
+        $("parseWarning").classList.add("hidden");
+      }
+
+      smallVibration();
+      showToast("Lista leída");
+    }
+
+    function parseExternalList(text) {
+      const missing = {};
+      const dupes = {};
+      const unknownLines = [];
+
+      let mode = null;
+
+      const lines = String(text || "")
+        .replace(/\u00a0/g, " ")
+        .replace(/\r/g, "\n")
+        .split("\n");
+
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+
+        if (!line) continue;
+        if (/https?:\/\//i.test(line)) continue;
+        if (/descarga|download|figuritas app|usa mex|usa méx|usa mexico|usa méxico/i.test(line)) continue;
+
+        const detected = detectMode(line);
+
+        if (detected) {
+          mode = detected;
+          continue;
+        }
+
+        if (!mode) continue;
+
+        const parsedCodes = parseStickerLine(line);
+
+        if (!parsedCodes.length) {
+          unknownLines.push(line);
+          continue;
+        }
+
+        const target = mode === "missing" ? missing : dupes;
+
+        for (const item of parsedCodes) {
+          target[item.code] = Number(target[item.code] || 0) + Number(item.amount || 1);
+        }
+      }
+
+      return {
+        missing,
+        dupes,
+        unknownLines
+      };
+    }
+
+    function parseStickerLine(line) {
+      const out = [];
+      let clean = String(line || "")
+        .trim()
+        .replace(/^[•\-–—*]\s*/, "")
+        .replace(/[;，]/g, ",");
+
+      if (!clean) return out;
+
+      if (/^00$/i.test(clean)) {
+        if (codeLookup.has("00")) out.push({ code: "00", amount: 1 });
+        return out;
+      }
+
+      const upper = clean.toUpperCase();
+      const sectionMatch = upper.match(/^([A-Z0-9]{2,3})(?=\b|\s|:|\d)/);
+
+      if (sectionMatch) {
+        const section = sectionMatch[1];
+
+        if (knownSections().includes(section) && section !== "00") {
+          const rest = clean.slice(section.length);
+          const tokens = extractNumberTokens(rest);
+
+          for (const token of tokens) {
+            const code = buildCode(section, token.number);
+
+            if (code && codeLookup.has(code)) {
+              out.push({ code, amount: token.amount });
+            }
+          }
+
+          return mergeParsedItems(out);
+        }
+      }
+
+      const explicit = extractExplicitCodes(clean);
+
+      for (const code of explicit) {
+        if (codeLookup.has(code)) {
+          out.push({ code, amount: 1 });
+        }
+      }
+
+      return mergeParsedItems(out);
+    }
+
+    function knownSections() {
+      const set = new Set(stickers.map(st => String(st.section || "").toUpperCase()));
+      return [...set].sort((a, b) => b.length - a.length);
+    }
+
+    function extractNumberTokens(text) {
+      const tokens = [];
+      const re = /(00|\d{1,2})(?:\s*(?:\(|\[)?\s*x\s*(\d{1,2})\s*(?:\)|\])?)?/gi;
+      let match;
+
+      while ((match = re.exec(text)) !== null) {
+        const number = match[1];
+        const amount = Math.max(1, Math.floor(Number(match[2] || 1)));
+
+        tokens.push({
+          number,
+          amount
+        });
+      }
+
+      return tokens;
+    }
+
+    function extractExplicitCodes(text) {
+      const found = [];
+      const re = /\b(00|[A-Z]{2,3}\s*0?\d{1,2})\b/gi;
+      let match;
+
+      while ((match = re.exec(String(text || ""))) !== null) {
+        const code = normalizeExplicitCode(match[1]);
+
+        if (code) found.push(code);
+      }
+
+      return found;
+    }
+
+    function normalizeExplicitCode(raw) {
+      const value = String(raw || "").replace(/\s+/g, "").toUpperCase();
+
+      if (value === "00") return "00";
+
+      const match = value.match(/^([A-Z]{2,3})(00|0?\d{1,2})$/);
+      if (!match) return null;
+
+      return buildCode(match[1], match[2]);
+    }
+
+    function buildCode(section, rawNumber) {
+      const sec = String(section || "").toUpperCase();
+      const value = String(rawNumber || "").trim();
+
+      if (value === "00") return "00";
+
+      const n = Number(value);
+      if (!Number.isFinite(n) || n <= 0) return null;
+
+      const code = sec + String(n);
+
+      return codeLookup.has(code) ? code : null;
+    }
+
+    function mergeParsedItems(items) {
+      const map = {};
+
+      for (const item of items) {
+        map[item.code] = Number(map[item.code] || 0) + Number(item.amount || 1);
+      }
+
+      return Object.entries(map).map(([code, amount]) => ({ code, amount }));
+    }
+
+    function getCanGive() {
+      quantities = sanitizeQuantities(loadQuantities());
+
+      return stickers.filter(st => {
+        const myRepeats = Math.max(0, qty(st.code) - 1);
+        const theyNeed = qtyFrom(externalMissing, st.code) > 0;
+
+        return myRepeats > 0 && theyNeed;
+      });
+    }
+
+    function getCanReceive() {
+      quantities = sanitizeQuantities(loadQuantities());
+
+      return stickers.filter(st => {
+        const theyHaveRepeated = qtyFrom(externalDupes, st.code) > 0;
+        const iNeed = qty(st.code) === 0;
+
+        return theyHaveRepeated && iNeed;
+      });
+    }
+
+    function renderComparison() {
+      quantities = sanitizeQuantities(loadQuantities());
+      updateStats();
+
+      const canGive = getCanGive();
+      const canReceive = getCanReceive();
+
+      $("comparisonPanel").classList.remove("hidden");
+      $("giveCount").textContent = canGive.length;
+      $("receiveCount").textContent = canReceive.length;
+
+      $("comparisonNote").textContent = `Encontré ${canGive.length} que puedes entregar y ${canReceive.length} que puedes recibir.`;
+
+      renderSelectableCards("giveList", canGive, selectedGive, "give");
+      renderSelectableCards("receiveList", canReceive, selectedReceive, "receive");
+      updateTrays();
     }
 
     function sectionTitleWithFlag(st) {
@@ -685,427 +1358,203 @@
       return `${flag} ${st.sectionName || st.section || ""}`;
     }
 
-    function encodeQuantitiesRLE(map) {
-      const tokens = [];
-      let zeroRun = 0;
-
-      for (const st of stickers) {
-        const n = Math.max(0, Math.floor(qtyFrom(map, st.code)));
-
-        if (n === 0) {
-          zeroRun++;
-          continue;
-        }
-
-        if (zeroRun) {
-          tokens.push("z" + zeroRun.toString(36));
-          zeroRun = 0;
-        }
-
-        tokens.push(n.toString(36));
-      }
-
-      if (zeroRun) tokens.push("z" + zeroRun.toString(36));
-      return tokens.join(".");
-    }
-
-    function decodeQuantitiesRLE(rle) {
-      const out = {};
-      if (!rle) return out;
-
-      const tokens = String(rle).split(".").filter(Boolean);
-      let index = 0;
-
-      for (const token of tokens) {
-        if (token.startsWith("z")) {
-          index += parseInt(token.slice(1), 36) || 0;
-          continue;
-        }
-
-        const st = stickers[index];
-        const n = parseInt(token, 36) || 0;
-        if (st && n > 0) out[st.code] = n;
-        index++;
-      }
-
-      return out;
-    }
-
-    function encodeProfilePayload(map) {
-      return `A26P1|${profileId}|${encodeQuantitiesRLE(map)}`;
-    }
-
-    function encodeTradeResultPayload(targetId, targetQuantities, trade) {
-      const give = (trade.giveCodes || []).join(",");
-      const receive = (trade.receiveCodes || []).join(",");
-      return `A26T1|${targetId}|${encodeQuantitiesRLE(targetQuantities)}|g:${give}|r:${receive}`;
-    }
-
-    function decodePayload(text) {
-      const raw = String(text || "").trim();
-
-      if (raw.startsWith("A26P1|")) {
-        const [, ownerId, rle] = raw.split("|");
-        return {
-          kind: "profile",
-          ownerId,
-          quantities: decodeQuantitiesRLE(rle)
-        };
-      }
-
-      if (raw.startsWith("A26T1|")) {
-        const parts = raw.split("|");
-        const targetId = parts[1];
-        const rle = parts[2];
-        const give = (parts.find(p => p.startsWith("g:")) || "g:").slice(2).split(",").filter(Boolean);
-        const receive = (parts.find(p => p.startsWith("r:")) || "r:").slice(2).split(",").filter(Boolean);
-
-        return {
-          kind: "trade-result",
-          targetId,
-          quantities: decodeQuantitiesRLE(rle),
-          trade: { giveCodes: give, receiveCodes: receive }
-        };
-      }
-
-      try {
-        const json = JSON.parse(raw);
-        if (json && json.quantities) {
-          return {
-            kind: json.type === "album2026-trade-result" ? "trade-result" : "profile",
-            ownerId: json.ownerId || json.profileId || "legacy",
-            targetId: json.targetOwnerId || json.targetId || null,
-            quantities: sanitizeQuantities(json.quantities),
-            trade: json.trade || {}
-          };
-        }
-      } catch {}
-
-      throw new Error("Este QR no pertenece al álbum o no tiene un formato compatible.");
-    }
-
-    function generateQr(containerId, payloadText) {
-      const el = $(containerId);
-      el.innerHTML = "";
-
-      if (typeof QRCode === "undefined") {
-        el.innerHTML = `<div class="error-box">No cargó la librería para generar QR. Revisa tu conexión a internet.</div>`;
-        return;
-      }
-
-      new QRCode(el, {
-        text: payloadText,
-        width: 240,
-        height: 240,
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-
-    function showMyQr() {
-      quantities = loadQuantities();
-      const payload = encodeProfilePayload(quantities);
-      $("myQrPanel").classList.remove("hidden");
-      generateQr("myQr", payload);
-      showToast("QR actualizado");
-    }
-
-    async function startScanner(title) {
-      if (!stickers.length) {
-        showBaseError();
-        return;
-      }
-
-      $("scannerTitle").textContent = title || "Escanear QR";
-      $("scannerPanel").classList.remove("hidden");
-
-      if (typeof Html5Qrcode === "undefined") {
-        alert("No cargó la librería para escanear QR. Revisa tu conexión a internet.");
-        return;
-      }
-
-      if (scanner) {
-        try { await scanner.stop(); } catch {}
-      }
-
-      scanner = new Html5Qrcode("reader");
-
-      scanner.start(
-        { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: { width: 230, height: 230 },
-          experimentalFeatures: { useBarCodeDetectorIfSupported: false }
-        },
-        onQrScanned,
-        () => {}
-      ).catch(() => {
-        alert("No se pudo abrir la cámara. En iPhone normalmente debes abrir esta página desde HTTPS y aceptar permisos de cámara.");
-      });
-    }
-
-    async function stopScanner() {
-      if (scanner) {
-        try { await scanner.stop(); } catch {}
-        scanner = null;
-      }
-
-      $("scannerPanel").classList.add("hidden");
-      $("reader").innerHTML = "";
-    }
-
-    async function onQrScanned(decodedText) {
-      await stopScanner();
-      smallVibration();
-
-      try {
-        const data = decodePayload(decodedText);
-
-        if (scannerMode === "friend-profile") {
-          if (data.kind !== "profile") throw new Error("Debes escanear el QR inicial de la otra persona.");
-          if (data.ownerId === profileId) throw new Error("Este parece ser tu propio QR. Escanea el QR de la otra persona.");
-
-          friendProfile = data;
-          friendQuantities = data.quantities || {};
-          selectedGive = {};
-          selectedReceive = {};
-          renderComparison();
-          showToast("QR leído");
-          return;
-        }
-
-        if (scannerMode === "trade-result") {
-          if (data.kind !== "trade-result") throw new Error("Debes escanear el QR final del cambio.");
-
-          if (data.targetId && data.targetId !== profileId) {
-            const ok = confirm("Este QR final no parece estar dirigido a este álbum. ¿Igual quieres aplicarlo?");
-            if (!ok) return;
-          }
-
-          saveQuantities(data.quantities || {});
-          showMyQr();
-          showToast("Cambio registrado");
-          return;
-        }
-      } catch (err) {
-        alert("No se pudo leer este QR: " + err.message);
-      }
-    }
-
-    function renderComparison() {
-      quantities = loadQuantities();
-
-      const canGive = stickers.filter(st => qty(st.code) > 1 && qtyFrom(friendQuantities, st.code) === 0);
-      const canReceive = stickers.filter(st => qtyFrom(friendQuantities, st.code) > 1 && qty(st.code) === 0);
-
-      $("comparisonPanel").classList.remove("hidden");
-      $("resultPanel").classList.add("hidden");
-      $("giveCount").textContent = canGive.length;
-      $("receiveCount").textContent = canReceive.length;
-
-      $("comparisonNote").textContent = `Se encontró un QR compatible. Puedes entregar ${canGive.length} carta(s) y recibir ${canReceive.length} carta(s), según repetidas y faltantes de ambos álbumes.`;
-
-      renderSelectableCards("giveList", canGive, selectedGive, "give");
-      renderSelectableCards("receiveList", canReceive, selectedReceive, "receive");
-      updateTrays();
-    }
-
-    function selectedQty(selectedMap, code) {
-      return Number(selectedMap[code] || 0);
-    }
-    
-    function maxSelectableQty(st, kind) {
+    function availableUnits(st, kind) {
       if (kind === "give") {
         return Math.max(0, qty(st.code) - 1);
       }
-    
-      return Math.max(0, qtyFrom(friendQuantities, st.code) - 1);
+
+      return Math.max(0, qtyFrom(externalDupes, st.code));
     }
-    
-    function addSelected(selectedMap, code, max) {
-      const current = selectedQty(selectedMap, code);
-    
-      if (current >= max) {
-        showToast("Ya no hay más repetidas disponibles");
-        return;
-      }
-    
-      selectedMap[code] = current + 1;
-    }
-    
-    function removeSelected(selectedMap, code) {
-      const current = selectedQty(selectedMap, code);
-    
-      if (current <= 1) {
+
+    function toggleSelected(selectedMap, code) {
+      if (selectedMap[code]) {
         delete selectedMap[code];
-        return;
+      } else {
+        selectedMap[code] = 1;
       }
-    
-      selectedMap[code] = current - 1;
     }
-    
-    function totalSelectedUnits(selectedMap) {
-      return Object.values(selectedMap).reduce((sum, n) => sum + Number(n || 0), 0);
-    }
-    
-    function expandSelectedCodes(selectedMap) {
-      const arr = [];
-    
-      for (const [code, amount] of Object.entries(selectedMap)) {
-        for (let i = 0; i < Number(amount || 0); i++) {
-          arr.push(code);
-        }
-      }
-    
-      return arr;
-    }
-    
+
     function renderSelectableCards(containerId, items, selectedMap, kind) {
       const box = $(containerId);
       box.innerHTML = "";
-    
+
       if (!items.length) {
-        box.innerHTML = `<p class="small-note">No hay cartas disponibles en esta categoría.</p>`;
+        box.innerHTML = `<p class="small-note">No hay figuritas disponibles aquí.</p>`;
         return;
       }
-    
+
       for (const st of items) {
-        const q = kind === "give" ? qty(st.code) : qtyFrom(friendQuantities, st.code);
-        const max = maxSelectableQty(st, kind);
-        const chosen = selectedQty(selectedMap, st.code);
-        const isSelected = chosen > 0;
-    
+        const chosen = Boolean(selectedMap[st.code]);
+        const available = availableUnits(st, kind);
+
         const el = document.createElement("div");
-        el.className = `card available ${kind === "receive" ? "receive" : ""} ${isSelected ? "selected" : ""}`;
+        el.className = `card available ${kind === "receive" ? "receive" : ""} ${chosen ? "selected" : ""}`;
+
         el.innerHTML = `
-          <div class="badge ${kind === "receive" ? "blue" : ""}">x${q}</div>
-          <div class="code">${escapeHtml(st.code)}</div>
+          <div class="badge ${kind === "receive" ? "blue" : ""}">x${available}</div>
+          <div class="code">${escapeHtml(displayCode(st))}</div>
           <div class="name">${escapeHtml(sectionTitleWithFlag(st))}</div>
-          <div class="card-action">${isSelected ? `EN CESTA x${chosen}/${max}` : `AÑADIR · máx. ${max}`}</div>
+          <div class="card-action">${chosen ? "EN CESTA" : "AÑADIR"}</div>
         `;
-    
+
         el.addEventListener("click", () => {
-          addSelected(selectedMap, st.code, max);
+          toggleSelected(selectedMap, st.code);
+          smallVibration();
           renderComparison();
         });
-    
+
         box.appendChild(el);
       }
     }
-    
+
+    function displayCode(st) {
+      if (st.section === "CC") return "🥤" + st.code;
+      return st.code;
+    }
+
     function updateTrays() {
       renderChips("giveTray", selectedGive, "give");
       renderChips("receiveTray", selectedReceive, "receive");
     }
-    
+
     function renderChips(containerId, selectedMap, kind) {
       const box = $(containerId);
-      const entries = Object.entries(selectedMap).filter(([, amount]) => Number(amount || 0) > 0);
-    
+      const entries = Object.keys(selectedMap)
+        .filter(code => selectedMap[code])
+        .sort(sortCodes);
+
       if (!entries.length) {
         box.className = "small-note";
         box.textContent = "Nada seleccionado.";
         return;
       }
-    
+
       box.className = "chips";
       box.innerHTML = "";
-    
-      for (const [code, amount] of entries) {
+
+      for (const code of entries) {
         const chip = document.createElement("span");
         chip.className = `chip ${kind}`;
-        chip.innerHTML = `${escapeHtml(code)} x${amount} <button type="button" aria-label="Quitar">−</button>`;
-    
+        chip.innerHTML = `${escapeHtml(code)} <button type="button" aria-label="Quitar">−</button>`;
+
         chip.querySelector("button").addEventListener("click", (e) => {
           e.stopPropagation();
-          removeSelected(selectedMap, code);
+          delete selectedMap[code];
           renderComparison();
         });
-    
+
         box.appendChild(chip);
       }
     }
-    
-    function applyTrade(map, giveCodes, receiveCodes) {
-      const next = { ...sanitizeQuantities(map) };
-    
-      for (const code of giveCodes) {
-        next[code] = Math.max(0, Number(next[code] || 0) - 1);
-        if (next[code] === 0) delete next[code];
-      }
-    
-      for (const code of receiveCodes) {
-        next[code] = Number(next[code] || 0) + 1;
-      }
-    
-      return sanitizeQuantities(next);
-    }
-    
-    function countCodes(codes) {
-      const out = {};
-    
-      for (const code of codes) {
-        out[code] = Number(out[code] || 0) + 1;
-      }
-    
-      return out;
-    }
-    
-    function applySelectedTrade() {
-      if (!friendProfile) {
-        alert("Primero escanea el QR de la otra persona.");
+
+    function copyRequestMessage() {
+      const giveCodes = selectedCodes(selectedGive);
+      const receiveCodes = selectedCodes(selectedReceive);
+
+      if (!giveCodes.length && !receiveCodes.length) {
+        alert("Selecciona al menos una figurita para solicitar el intercambio.");
         return;
       }
-    
-      if (!totalSelectedUnits(selectedGive) && !totalSelectedUnits(selectedReceive)) {
-        alert("Selecciona al menos una carta para entregar o recibir.");
-        return;
-      }
-    
-      quantities = loadQuantities();
-    
-      const giveCodes = expandSelectedCodes(selectedGive);
-      const receiveCodes = expandSelectedCodes(selectedReceive);
-    
-      const giveCounts = countCodes(giveCodes);
-      const receiveCounts = countCodes(receiveCodes);
-    
-      const invalidGive = Object.entries(giveCounts).find(([code, amount]) => {
-        return qty(code) - 1 < amount || qtyFrom(friendQuantities, code) !== 0;
-      });
-    
-      const invalidReceive = Object.entries(receiveCounts).find(([code, amount]) => {
-        return qtyFrom(friendQuantities, code) - 1 < amount || qty(code) !== 0;
-      });
-    
-      if (invalidGive || invalidReceive) {
-        alert("La selección ya no es válida. Se actualizará la comparación.");
-        renderComparison();
-        return;
-      }
-    
-      const updatedMine = applyTrade(quantities, giveCodes, receiveCodes);
-      const updatedFriend = applyTrade(friendQuantities, receiveCodes, giveCodes);
-    
-      saveQuantities(updatedMine);
-      friendQuantities = updatedFriend;
-    
-      lastResultPayload = encodeTradeResultPayload(friendProfile.ownerId, updatedFriend, { giveCodes, receiveCodes });
-      generateQr("resultQr", lastResultPayload);
-    
-      $("resultSummary").textContent = `Tú entregaste: ${giveCodes.length ? giveCodes.join(", ") : "nada"}. Tú recibiste: ${receiveCodes.length ? receiveCodes.join(", ") : "nada"}.`;
-    
-      selectedGive = {};
-      selectedReceive = {};
-    
-      renderComparison();
-    
-      $("resultPanel").classList.remove("hidden");
-      $("resultPanel").scrollIntoView({ behavior: "smooth", block: "start" });
-    
-      showToast("Cambio registrado");
+
+      const message = buildRequestMessage(giveCodes, receiveCodes);
+
+      copyText(message);
     }
+
+    function selectedCodes(map) {
+      return Object.keys(map)
+        .filter(code => map[code])
+        .sort(sortCodes);
+    }
+
+    function buildRequestMessage(giveCodes, receiveCodes) {
+      return `Hola, revisé tus figuritas con mi FiguApp y podemos intercambiar las siguientes:
+
+YO ENTREGO:
+
+${formatCodesForMessage(giveCodes)}
+
+TÚ ME ENTREGAS:
+
+${formatCodesForMessage(receiveCodes)}
+
+¿Me confirmas si podríamos hacer los cambios?
+
+✅ Descarga la app 100% GRATIS sin anuncios: https://mhsan09.github.io/figuapp`;
+    }
+
+    function formatCodesForMessage(codes) {
+      if (!codes.length) return "Nada";
+
+      const groups = new Map();
+
+      for (const code of codes.sort(sortCodes)) {
+        const st = codeLookup.get(code);
+        const section = st ? st.section : "OTR";
+
+        if (!groups.has(section)) {
+          groups.set(section, []);
+        }
+
+        groups.get(section).push(stickerNumber(code));
+      }
+
+      const lines = [];
+
+      for (const [section, numbers] of groups.entries()) {
+        lines.push(`${sectionLabel(section)}: ${numbers.join(", ")}`);
+      }
+
+      return lines.join("\n");
+    }
+
+    function sectionLabel(section) {
+      if (section === "00") return "Especial ✨";
+
+      const flag = SECTION_FLAGS[section] || "🏳️";
+      return `${section} ${flag}`;
+    }
+
+    function stickerNumber(code) {
+      const st = codeLookup.get(code);
+
+      if (!st) return code;
+      if (st.code === "00") return "00";
+
+      return st.code.replace(st.section, "");
+    }
+
+    function sortCodes(a, b) {
+      const ai = orderLookup.has(a) ? orderLookup.get(a) : 999999;
+      const bi = orderLookup.has(b) ? orderLookup.get(b) : 999999;
+
+      return ai - bi || String(a).localeCompare(String(b));
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+
+      showToast("Mensaje copiado");
+      smallVibration();
+    }
+
     function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, s => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[s]));
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[s]));
     }
   </script>
 </body>
