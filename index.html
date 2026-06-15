@@ -639,6 +639,150 @@
           transform: translateX(230%);
         }
       }
+    /* Botón flotante de bloqueo de inventario */
+    .lock-float-btn {
+      position: fixed;
+      right: max(16px, calc((100vw - 1180px) / 2 + 16px));
+      bottom: calc(82px + env(safe-area-inset-bottom));
+      z-index: 9997;
+    
+      width: 58px;
+      height: 58px;
+      border-radius: 999px;
+      padding: 0;
+    
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    
+      border: 1px solid rgba(255,255,255,.16);
+      background:
+        radial-gradient(circle at top left, rgba(250,204,21,.18), transparent 2.3rem),
+        radial-gradient(circle at bottom right, rgba(52,211,153,.12), transparent 2.4rem),
+        rgba(16,21,34,.90);
+    
+      color: #eef3ff;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.42),
+        inset 0 1px 0 rgba(255,255,255,.10);
+    
+      transition:
+        transform .16s ease,
+        background .18s ease,
+        color .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+    }
+    
+    .lock-float-btn:hover {
+      background:
+        radial-gradient(circle at top left, rgba(250,204,21,.25), transparent 2.3rem),
+        radial-gradient(circle at bottom right, rgba(52,211,153,.18), transparent 2.4rem),
+        rgba(16,21,34,.96);
+    }
+    
+    .lock-float-btn:active {
+      transform: scale(.94);
+    }
+    
+    .lock-icon {
+      width: 26px;
+      height: 26px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    
+    .lock-closed {
+      display: none;
+    }
+    
+    /* Estado bloqueado: botón blanco iluminado */
+    body.inventory-locked .lock-float-btn {
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,.98), rgba(255,255,255,.80)),
+        #f8fafc;
+    
+      color: #080b12;
+      border-color: rgba(255,255,255,.88);
+    
+      box-shadow:
+        0 0 0 7px rgba(255,255,255,.10),
+        0 0 34px rgba(255,255,255,.52),
+        0 24px 70px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.95);
+    }
+    
+    body.inventory-locked .lock-open {
+      display: none;
+    }
+    
+    body.inventory-locked .lock-closed {
+      display: block;
+    }
+    
+    /* Mientras esté bloqueado, los controles de las cartas quedan visualmente apagados */
+    body.inventory-locked .card .controls {
+      opacity: .28;
+      filter: grayscale(1);
+      pointer-events: none;
+    }
+    
+    body.inventory-locked #registerBtn {
+      opacity: .45;
+      filter: grayscale(1);
+      pointer-events: none;
+    }
+    
+    body.inventory-locked #codeInput {
+      opacity: .65;
+    }
+    
+    /* Shake de la app al cerrar el candado */
+    body.lock-shake .app {
+      animation: figuAppShake .42s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    
+    @keyframes figuAppShake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      12% {
+        transform: translateX(-7px);
+      }
+      24% {
+        transform: translateX(7px);
+      }
+      36% {
+        transform: translateX(-6px);
+      }
+      48% {
+        transform: translateX(6px);
+      }
+      60% {
+        transform: translateX(-4px);
+      }
+      72% {
+        transform: translateX(4px);
+      }
+      84% {
+        transform: translateX(-2px);
+      }
+    }
+    
+    @media (max-width: 520px) {
+      .lock-float-btn {
+        width: 56px;
+        height: 56px;
+        right: 14px;
+        bottom: calc(78px + env(safe-area-inset-bottom));
+      }
+    }
       </style>
 </head>
 <body>
@@ -726,6 +870,26 @@
   </div>
 
   <div id="toast" class="toast">Copiado</div>
+  <button
+    id="lockModeBtn"
+    class="lock-float-btn"
+    type="button"
+    aria-label="Bloquear inventario"
+    aria-pressed="false"
+    title="Bloquear inventario"
+  >
+    <svg class="lock-icon lock-open" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+      <path d="M8 10V7a4 4 0 0 1 7.5-2"></path>
+      <path d="M12 14v2.5"></path>
+    </svg>
+  
+    <svg class="lock-icon lock-closed" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+      <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+      <path d="M12 14v2.5"></path>
+    </svg>
+  </button>
   <div id="backupReminderOverlay" class="backup-reminder-overlay" aria-hidden="true">
     <div class="backup-reminder-card" role="dialog" aria-modal="true" aria-label="Recordatorio de respaldo">
       <img src="logobase.png" alt="FIGUAPP" class="backup-reminder-logo" />
@@ -797,6 +961,7 @@
     let quantities = loadQuantities();
     let openSections = loadOpenSections();
     let view = "all";
+    let inventoryLocked = false;
     const SECTION_FLAGS = {
       "00": "✨",
       "FWC": "🏆",
@@ -859,6 +1024,63 @@
       if ("vibrate" in navigator) {
         navigator.vibrate(12);
       }
+    }
+    function lockVibration() {
+      if ("vibrate" in navigator) {
+        navigator.vibrate([18, 35, 18]);
+      }
+    }
+    
+    function shakeApp() {
+      document.body.classList.remove("lock-shake");
+    
+      // Esto reinicia la animación aunque se presione varias veces
+      void document.body.offsetWidth;
+    
+      document.body.classList.add("lock-shake");
+    
+      setTimeout(() => {
+        document.body.classList.remove("lock-shake");
+      }, 480);
+    }
+    
+    function setInventoryLocked(isLocked) {
+      inventoryLocked = isLocked;
+    
+      document.body.classList.toggle("inventory-locked", inventoryLocked);
+    
+      const lockBtn = $("lockModeBtn");
+      const input = $("codeInput");
+    
+      if (lockBtn) {
+        lockBtn.setAttribute("aria-pressed", String(inventoryLocked));
+        lockBtn.setAttribute(
+          "aria-label",
+          inventoryLocked ? "Desbloquear inventario" : "Bloquear inventario"
+        );
+        lockBtn.title = inventoryLocked ? "Desbloquear inventario" : "Bloquear inventario";
+      }
+    
+      if (input) {
+        input.readOnly = inventoryLocked;
+    
+        if (inventoryLocked) {
+          input.blur();
+        }
+      }
+    
+      if (inventoryLocked) {
+        lockVibration();
+        shakeApp();
+        showToast("Inventario bloqueado");
+      } else {
+        smallVibration();
+        showToast("Inventario desbloqueado");
+      }
+    }
+    
+    function toggleInventoryLock() {
+      setInventoryLocked(!inventoryLocked);
     }
     function loadQuantities() {
       try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
@@ -1021,6 +1243,12 @@
       `;
     el.querySelector(".plus").addEventListener("click", (e) => {
       e.stopPropagation();
+    
+      if (inventoryLocked) {
+        showToast("Inventario bloqueado");
+        return;
+      }
+    
       smallVibration();
       quantities[st.code] = q + 1;
       saveQuantities();
@@ -1029,6 +1257,12 @@
     
     el.querySelector(".minus").addEventListener("click", (e) => {
       e.stopPropagation();
+    
+      if (inventoryLocked) {
+        showToast("Inventario bloqueado");
+        return;
+      }
+    
       quantities[st.code] = Math.max(0, q - 1);
       if (quantities[st.code] === 0) delete quantities[st.code];
       saveQuantities();
@@ -1076,6 +1310,13 @@
     }
     function registerTypedCode() {
       const input = $("codeInput");
+    
+      if (inventoryLocked) {
+        if (input) input.blur();
+        showToast("Inventario bloqueado");
+        return;
+      }
+    
       const code = normalizeCode(input.value);
       if (!code) return;
       const st = BASE_STICKERS.find(item => item.code.toUpperCase() === code);
@@ -1095,6 +1336,7 @@
     $("codeInput").addEventListener("keydown", e => { if (e.key === "Enter") registerTypedCode(); });
     $("registerBtn").addEventListener("click", registerTypedCode);
     $("view").addEventListener("change", e => { view = e.target.value; render(); });
+    $("lockModeBtn").addEventListener("click", toggleInventoryLock);
     $("openAll").addEventListener("click", () => {
       for (const key of grouped().keys()) openSections[key] = true;
       saveOpenSections(); render();
