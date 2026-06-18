@@ -303,7 +303,7 @@
     .stats {
       display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; margin: 14px 0;
     }
-    @media (min-width: 760px) { .stats { grid-template-columns: repeat(5, minmax(0,1fr)); } }
+    @media (min-width: 760px) { .stats { grid-template-columns: repeat(6, minmax(0,1fr)); } }
     .stat {
       background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
       border:1px solid var(--line); border-radius: var(--radius); padding: 12px;
@@ -313,6 +313,103 @@
     .num { margin-top:5px; font-size: 25px; font-weight: 900; letter-spacing: -.04em; }
     .progress-wrap { background: rgba(255,255,255,.08); border-radius: 999px; height: 10px; overflow:hidden; margin-top:9px; }
     .progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--yellow), var(--green)); border-radius:999px; transition: width .25s ease; }
+
+    .exchange-stat {
+      padding: 0;
+      overflow: visible;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+
+    .exchange-split {
+      width: 100%;
+      min-height: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 58px;
+      gap: 8px;
+      background: transparent;
+    }
+
+    .stat-link-btn {
+      width: 100%;
+      min-height: 100%;
+      height: 100%;
+      padding: 12px 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      text-align: center;
+      background:
+        radial-gradient(circle at top right, rgba(52,211,153,.22), transparent 7rem),
+        linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.035));
+      transition: transform .12s ease, background .12s ease;
+    }
+
+    .stat-link-btn:hover {
+      background:
+        radial-gradient(circle at top right, rgba(52,211,153,.30), transparent 7rem),
+        linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.045));
+    }
+
+    .stat-link-btn:active {
+      transform: scale(.985);
+    }
+
+    .stat-link-title {
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: .02em;
+      line-height: 1.05;
+      text-transform: uppercase;
+    }
+
+    .stat-link-note {
+      color: #bbf7d0;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+    }
+
+    .funny-stat-btn {
+      width: 100%;
+      min-height: 100%;
+      height: 100%;
+      border: 1px solid rgba(250,204,21,.38);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.45), transparent 2.6rem),
+        linear-gradient(180deg, #fde047, #facc15);
+      color: #111827;
+      transition: transform .12s ease, filter .12s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .funny-stat-btn:hover {
+      filter: brightness(1.05);
+    }
+
+    .funny-stat-btn:active {
+      transform: scale(.97);
+    }
+
+    .funny-icon {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      display: block;
+    }
     .panel {
       background: rgba(16,21,34,.72); border:1px solid var(--line); border-radius: 22px;
       padding: 12px; box-shadow: var(--shadow); margin-bottom: 12px;
@@ -676,6 +773,277 @@
           transform: translateX(230%);
         }
       }
+
+    /* Ventana flotante de migración */
+    .migrate-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9996;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 12px calc(18px + env(safe-area-inset-bottom));
+      background: rgba(0, 0, 0, .60);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .24s ease;
+    }
+
+    .migrate-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .migrate-card {
+      position: relative;
+      width: min(100%, 520px);
+      max-height: calc(100vh - 34px - env(safe-area-inset-top));
+      overflow: auto;
+      padding: 18px 14px 14px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top left, rgba(250,204,21,.16), transparent 18rem),
+        radial-gradient(circle at top right, rgba(52,211,153,.14), transparent 18rem),
+        rgba(8,11,18,.97);
+      border: 1px solid rgba(255,255,255,.13);
+      box-shadow: 0 24px 80px rgba(0,0,0,.58);
+      transform: scale(.96) translateY(14px);
+      transition: transform .28s cubic-bezier(.2, .9, .2, 1);
+    }
+
+    .migrate-overlay.show .migrate-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .migrate-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 2;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 999px;
+      background: rgba(0,0,0,.45);
+      color: #fff;
+      font-size: 30px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .migrate-logo {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 10px;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.42));
+    }
+
+    .migrate-title {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.05;
+      letter-spacing: -.04em;
+      font-weight: 950;
+      text-align: center;
+    }
+
+    .migrate-text {
+      margin: 10px 0 0;
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 650;
+      text-align: center;
+    }
+
+    .migrate-box {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      color: #e5e7eb;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .migrate-box strong {
+      color: var(--yellow);
+    }
+
+    .migrate-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .migrate-actions .btn {
+      flex: 1;
+    }
+
+    .migrate-textarea {
+      min-height: 230px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    .migrate-summary {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    @media (min-width: 520px) {
+      .migrate-summary {
+        grid-template-columns: repeat(4, minmax(0,1fr));
+      }
+    }
+
+    .migrate-mini {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 10px;
+      background: rgba(255,255,255,.05);
+    }
+
+    .migrate-mini .label {
+      font-size: 10px;
+    }
+
+    .migrate-mini .num {
+      font-size: 21px;
+    }
+
+    .migrate-warning {
+      background: rgba(248,113,113,.10);
+      border: 1px solid rgba(248,113,113,.35);
+      color: #fecaca;
+      border-radius: 18px;
+      padding: 12px;
+      margin-top: 12px;
+      line-height: 1.4;
+      font-size: 13px;
+    }
+
+    .migrate-ok {
+      background: rgba(52,211,153,.10);
+      border: 1px solid rgba(52,211,153,.30);
+      color: #bbf7d0;
+      border-radius: 18px;
+      padding: 12px;
+      margin-top: 12px;
+      line-height: 1.4;
+      font-size: 13px;
+    }
+
+    /* Ventana flotante de Funny Stat */
+    .funny-stat-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9995;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 12px calc(18px + env(safe-area-inset-bottom));
+      background: rgba(0, 0, 0, .60);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .24s ease;
+    }
+
+    .funny-stat-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .funny-stat-card {
+      width: min(100%, 430px);
+      max-height: calc(100vh - 34px - env(safe-area-inset-top));
+      overflow: auto;
+      padding: 20px 16px 16px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top left, rgba(250,204,21,.18), transparent 18rem),
+        radial-gradient(circle at top right, rgba(52,211,153,.12), transparent 18rem),
+        rgba(8,11,18,.97);
+      border: 1px solid rgba(255,255,255,.13);
+      box-shadow: 0 24px 80px rgba(0,0,0,.58);
+      transform: scale(.96) translateY(14px);
+      transition: transform .28s cubic-bezier(.2, .9, .2, 1);
+    }
+
+    .funny-stat-overlay.show .funny-stat-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .funny-stat-title {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.05;
+      letter-spacing: -.04em;
+      font-weight: 950;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+    }
+
+    .funny-title-icon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .funny-stat-list {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .funny-stat-line {
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      border-radius: 18px;
+      padding: 12px 12px;
+      color: #eef3ff;
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .funny-stat-main {
+      display: block;
+    }
+
+    .funny-stat-paren {
+      display: block;
+      margin-top: 5px;
+      color: var(--yellow);
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 650;
+    }
+
+    .funny-stat-actions {
+      margin-top: 14px;
+    }
+
+    .funny-stat-actions .btn {
+      width: 100%;
+    }
+
     /* Botón flotante de bloqueo de inventario */
     .lock-float-btn {
       position: fixed;
@@ -834,9 +1202,9 @@
             </div>
           </div>
           <div class="top-actions">
-          <a class="btn exchange-btn" href="intercambio.html">
-            ZONA DE INTERCAMBIOS
-          </a>
+          <button class="btn exchange-btn" id="openMigrateBtn" type="button">
+            MIGRAR
+          </button>
         
           <button class="btn primary copy-exchange-btn" id="copyAllBtn" aria-label="Copiar intercambio" title="Copiar intercambio">
             <svg class="copy-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -877,6 +1245,21 @@
         <div class="label">Avance</div><div class="num" id="pct">0%</div>
         <div class="progress-wrap"><div class="progress" id="bar"></div></div>
       </div>
+      <div class="stat exchange-stat">
+        <div class="exchange-split">
+          <a class="stat-link-btn" href="intercambio.html" aria-label="Abrir intercambio">
+            <span class="stat-link-title">INTERCAMBIO</span>
+          </a>
+          <button class="funny-stat-btn" id="openFunnyStatBtn" type="button" aria-label="Abrir Funny Stat" title="Funny Stat">
+            <svg class="funny-icon" viewBox="0 0 64 64" aria-hidden="true">
+              <circle cx="32" cy="32" r="29" fill="none" stroke="#111827" stroke-width="3.8"></circle>
+              <path d="M15.5 22.5L25.5 27.5L15.5 32.5" fill="none" stroke="#111827" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M48.5 22.5L38.5 27.5L48.5 32.5" fill="none" stroke="#111827" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M14 37C18.2 52.5 45.8 52.5 50 37Z" fill="#111827"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
     </section>
 
     <section class="panel" id="sections"></section>
@@ -894,7 +1277,81 @@
     </section>
   </div>
 
+  <div id="funnyStatOverlay" class="funny-stat-overlay" aria-hidden="true">
+    <div class="funny-stat-card" role="dialog" aria-modal="true" aria-label="Funny Stat">
+      <h2 class="funny-stat-title">
+        <svg class="funny-title-icon" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="29" fill="var(--yellow)" stroke="#111827" stroke-width="2.3"></circle>
+          <path d="M15.5 22.5L25.5 27.5L15.5 32.5" fill="none" stroke="#111827" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M48.5 22.5L38.5 27.5L48.5 32.5" fill="none" stroke="#111827" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M14 37C18.2 52.5 45.8 52.5 50 37Z" fill="#111827"></path>
+        </svg>
+        <span>Funny Stat</span>
+      </h2>
+      <div id="funnyStatList" class="funny-stat-list"></div>
+      <div class="funny-stat-actions">
+        <button class="btn primary" id="closeFunnyStatBtn" type="button">XD</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast">Copiado</div>
+  <div id="migrateOverlay" class="migrate-overlay" aria-hidden="true">
+    <div class="migrate-card" role="dialog" aria-modal="true" aria-label="Migrar inventario">
+      <button id="closeMigrateBtn" class="migrate-close" type="button" aria-label="Cerrar migración">×</button>
+
+      <div id="migrateIntroStep">
+        <img src="logobase.png" alt="FIGUAPP" class="migrate-logo" />
+        <h2 class="migrate-title">Migrar inventario</h2>
+        <p class="migrate-text">
+          Esta función sirve para trasladar tu inventario desde otras apps a FIGUAPP.
+        </p>
+        <div class="migrate-box">
+          Pega una lista que incluya tus <strong>faltantes</strong> y tus <strong>repetidas</strong>.
+          FIGUAPP detectará las cartas, reconstruirá tu inventario y lo registrará en esta app.
+        </div>
+        <div class="migrate-actions">
+          <button class="btn primary" id="migrateNextBtn" type="button">Siguiente</button>
+        </div>
+      </div>
+
+      <div id="migratePasteStep" class="hidden">
+        <h2 class="migrate-title">Pega tu lista</h2>
+        <p class="migrate-text">
+          Pega aquí la lista generada por otra aplicación. Puede venir en formato de faltantes/repetidas, por equipos, códigos o bloques de texto.
+        </p>
+
+        <textarea
+          id="migrateInput"
+          class="migrate-textarea"
+          placeholder="Ejemplo:
+Faltantes:
+ARG 1, 2, 3
+BRA4, BRA5
+
+Repetidas:
+MEX 1 x2, 7
+FWC10"
+        ></textarea>
+
+        <div class="migrate-actions">
+          <button class="btn primary" id="registerMigrateBtn" type="button">Registrar cartas</button>
+          <button class="btn danger" id="clearMigrateBtn" type="button">Limpiar</button>
+        </div>
+
+        <div id="migrateSummary" class="migrate-summary hidden">
+          <div class="migrate-mini"><div class="label">Faltantes</div><div class="num" id="migrateMissingStat">0</div></div>
+          <div class="migrate-mini"><div class="label">Repetidas</div><div class="num" id="migrateDupesStat">0</div></div>
+          <div class="migrate-mini"><div class="label">Tengo</div><div class="num" id="migrateOwnedStat">0</div></div>
+          <div class="migrate-mini"><div class="label">Avance</div><div class="num" id="migratePctStat">0%</div></div>
+        </div>
+
+        <div id="migrateWarning" class="migrate-warning hidden"></div>
+        <div id="migrateOk" class="migrate-ok hidden"></div>
+      </div>
+    </div>
+  </div>
+
   <button
     id="lockModeBtn"
     class="lock-float-btn"
@@ -1220,13 +1677,13 @@
     }
     
     function buildExchangeText() {
-      return `FiguApp
-    
-    ${buildExchangeSection("REPETIDAS", dupeFilter, true)}
-    
-    ${buildExchangeSection("ME FALTAN", missingFilter, false)}
-    
-    ✅ Descarga la app 100% GRATIS sin anuncios: https://mhsan09.github.io/figuapp`;
+      return `Lista hecha con ⚽️ FiguApp ⚽️
+
+${buildExchangeSection("🃏REPETIDAS", dupeFilter, true)}
+
+${buildExchangeSection("🕵️‍♂️ ME FALTAN", missingFilter, false)}
+
+⚽️ Descarga la FIGUAPP 100% GRATIS sin anuncios ⚽️ https://mhsan09.github.io/figuapp`;
     }
     function missingFilter(st) { return qty(st.code) === 0; }
     function ownedFilter(st) { return qty(st.code) > 0; }
@@ -1341,7 +1798,717 @@
       return String(str).replace(/[&<>"']/g, s => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[s]));
     }
 
+    function funnyTeamSections() {
+      return [...grouped().entries()].filter(([sec]) => !["00", "FWC", "CC"].includes(sec));
+    }
+
+    function funnySectionLabel(sec) {
+      const items = grouped().get(sec) || [];
+      const flag = SECTION_FLAGS[sec] || "🏳️";
+      return `${sec} ${flag}`;
+    }
+
+    function funnyOwnedInSection(items) {
+      return items.filter(st => qty(st.code) > 0).length;
+    }
+
+    function funnyMissingInSection(items) {
+      return items.filter(st => qty(st.code) === 0).length;
+    }
+
+    function funnyRepeatsInSection(items) {
+      return items.reduce((sum, st) => sum + duplicateCount(st), 0);
+    }
+
+    function funnyPick(items) {
+      if (!items.length) return null;
+      return items[Math.floor(Math.random() * items.length)];
+    }
+
+    function funnySectionsWithNumbers(a, b) {
+      const out = [];
+
+      for (const [sec] of funnyTeamSections()) {
+        if (qty(`${sec}${a}`) > 0 && qty(`${sec}${b}`) > 0) {
+          out.push(funnySectionLabel(sec));
+        }
+      }
+
+      return out;
+    }
+
+    function funnyBestCompletedOrAlmostSection() {
+      const complete = [];
+      const almost = [];
+
+      for (const [sec, items] of funnyTeamSections()) {
+        const owned = funnyOwnedInSection(items);
+        const missing = items.length - owned;
+
+        if (missing === 0) complete.push(sec);
+        else if (missing <= 2 && owned > 0) almost.push(sec);
+      }
+
+      return funnyPick(complete) || funnyPick(almost);
+    }
+
+    function buildFunnyStats() {
+      const total = BASE_STICKERS.length;
+      const owned = BASE_STICKERS.filter(st => qty(st.code) > 0).length;
+      const missing = total - owned;
+      const dupes = BASE_STICKERS.reduce((sum, st) => sum + duplicateCount(st), 0);
+      const totalCards = BASE_STICKERS.reduce((sum, st) => sum + qty(st.code), 0);
+      const stats = [];
+
+      if (owned === total && total > 0) {
+        stats.push("Eres LA CABRA (Completaste el álbum)");
+      }
+
+      if (owned <= 7) {
+        stats.push("Uy mi bro, quieres un sobrecito?");
+      }
+
+      const maxRepeat = Math.max(0, ...BASE_STICKERS.map(st => duplicateCount(st)));
+      if (maxRepeat > 0) {
+        const favorites = BASE_STICKERS.filter(st => duplicateCount(st) === maxRepeat);
+        const fav = funnyPick(favorites);
+        if (fav) stats.push(`Tu carta favorita es ${fav.code} (es la que más repe tienes bro)`);
+      }
+
+      const fullSections = funnyTeamSections()
+        .filter(([, items]) => funnyMissingInSection(items) === 0)
+        .map(([sec]) => funnySectionLabel(sec));
+      if (fullSections.length) {
+        stats.push(`Tus selecciones completas sonnnn ${fullSections.join(", ")} (ojito con ${fullSections[fullSections.length - 1]})`);
+      }
+
+      let mostMissing = null;
+      for (const [sec, items] of funnyTeamSections()) {
+        const count = funnyMissingInSection(items);
+        if (count > 0 && (!mostMissing || count > mostMissing.count)) {
+          mostMissing = { sec, count };
+        }
+      }
+      if (mostMissing) {
+        stats.push(`Ponle más ganas a ${funnySectionLabel(mostMissing.sec)} que ahí faltan más que en todoooo.`);
+      }
+
+      let mostRepeats = null;
+      for (const [sec, items] of grouped()) {
+        const count = funnyRepeatsInSection(items);
+        if (count > 0 && (!mostRepeats || count > mostRepeats.count)) {
+          mostRepeats = { sec, count };
+        }
+      }
+      if (mostRepeats) {
+        stats.push(`Tu sele con más repes es ${funnySectionLabel(mostRepeats.sec)} (tienes ${mostRepeats.count} para regalar)`);
+      }
+
+      if (missing > 0) {
+        const envelopes = Math.ceil(missing / 7);
+        stats.push(`Te faltarían solo ${envelopes} sobres, claro, considerando que tienes la suerte de que no te toca ninguna repetida`);
+      }
+
+      const hasMessi = qty("ARG17") > 0;
+      const hasCr7 = qty("POR15") > 0;
+      const repMessi = qty("ARG17") > 1;
+      const repCr7 = qty("POR15") > 1;
+
+      if (repMessi) stats.push("TU GOAT es Messi.");
+      if (repCr7) stats.push("TU GOAT es CR7.");
+      if (hasMessi && !hasCr7) stats.push("MESSI MEJOR QUE CRISTIANO TODA LA VIDA PAPÁ (Tienes un Messi y no un Cristiano)");
+      if (hasCr7 && !hasMessi) stats.push("CRISTIANO MI COMANDANTE SIUUUU MEJOR QUE FRESSI. (Tienes un CR7 pero no un Messi)");
+      if (!hasMessi && !hasCr7) stats.push("Uy, y los GOATS? (No tienes ni a Messi ni a CR7 registrados)");
+
+      if (missing > dupes) {
+        stats.push("Échale ganas bro, tienes más faltantes que repetidas.");
+      }
+
+      if (dupes > missing) {
+        stats.push("Ve al Parque Kennedy! Tienes más repetidas que faltantes.");
+      }
+
+      if (owned >= 850) {
+        stats.push(`Tienes ${owned} cartas, casi como los goles de Cristiano.`);
+      }
+
+      if (qty("NZL6") > 0) {
+        stats.push("Felicidades, tienes a Timmmm Payne!!!");
+      }
+
+      const champion = funnyBestCompletedOrAlmostSection();
+      if (champion) {
+        stats.push(`OAAAA, tu campeón del mundo es ${funnySectionLabel(champion)}!`);
+      }
+
+      const ccItems = grouped().get("CC") || [];
+      const ccOwned = ccItems.filter(st => qty(st.code) > 0).length;
+      const ccDupes = ccItems.reduce((sum, st) => sum + duplicateCount(st), 0);
+      if (ccItems.length && ccOwned === 0) {
+        stats.push("Te falta más refresco!");
+      }
+      if (ccDupes > 0) {
+        stats.push("Bájale a la azúcar bro.");
+      }
+
+      if (totalCards > 0) {
+        stats.push(`Has abierto ${Math.floor(totalCards / 7)} sobres en total`);
+      }
+
+      const sixtySeven = funnySectionsWithNumbers(6, 7);
+      if (sixtySeven.length) {
+        stats.push(`67!!! Lo tienes en: ${sixtySeven.join(", ")}`);
+      }
+
+      const argItems = grouped().get("ARG") || [];
+      if (argItems.length && funnyMissingInSection(argItems) === 0) {
+        stats.push("ESTA LOCURAAAAAAA (Tienes a la selección Argentina completa)");
+      }
+
+      if (!stats.length) {
+        stats.push("Uy mi bro, quieres un sobrecito?");
+      }
+
+      return stats;
+    }
+
+    function formatFunnyStatPhrase(phrase) {
+      const value = String(phrase || "").trim();
+      const match = value.match(/^(.*?)(\s*\([^()]+\))$/);
+
+      if (!match) {
+        return `<span class="funny-stat-main">${escapeHtml(value)}</span>`;
+      }
+
+      return `<span class="funny-stat-main">${escapeHtml(match[1].trim())}</span><span class="funny-stat-paren">${escapeHtml(match[2].trim())}</span>`;
+    }
+
+    function openFunnyStatModal() {
+      const overlay = $("funnyStatOverlay");
+      const list = $("funnyStatList");
+      if (!overlay || !list) return;
+
+      list.innerHTML = "";
+
+      const phrases = buildFunnyStats();
+      const phrase = funnyPick(phrases) || "Uy mi bro, quieres un sobrecito?";
+      const item = document.createElement("div");
+      item.className = "funny-stat-line";
+      item.innerHTML = formatFunnyStatPhrase(phrase);
+      list.appendChild(item);
+
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+      smallVibration();
+    }
+
+    function closeFunnyStatModal() {
+      const overlay = $("funnyStatOverlay");
+      if (!overlay) return;
+
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+
+
+    function getMigrateCodeLookup() {
+      const map = new Map();
+
+      for (const st of BASE_STICKERS) {
+        map.set(String(st.code || "").toUpperCase(), st);
+      }
+
+      return map;
+    }
+
+    function migrateStripAccents(str) {
+      return String(str || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function migrateKnownSections() {
+      const set = new Set(BASE_STICKERS.map(st => String(st.section || "").toUpperCase()));
+      return [...set].filter(Boolean).sort((a, b) => b.length - a.length);
+    }
+
+    function migrateSectionAliases() {
+      const aliases = new Map();
+
+      for (const st of BASE_STICKERS) {
+        const section = String(st.section || "").toUpperCase();
+        const sectionName = migrateStripAccents(st.sectionName || "").toUpperCase().trim();
+
+        if (!section) continue;
+
+        aliases.set(section, section);
+
+        if (sectionName) {
+          aliases.set(sectionName, section);
+        }
+      }
+
+      return [...aliases.entries()]
+        .map(([alias, section]) => ({ alias, section }))
+        .sort((a, b) => b.alias.length - a.alias.length);
+    }
+
+    function canonicalMigrateAlias(str) {
+      return migrateStripAccents(str || "")
+        .toUpperCase()
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function escapeMigrateRegex(str) {
+      return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function detectMigrateMode(line) {
+      const s = migrateStripAccents(line)
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+
+      if (/(^|\b)(repetidas|repetidos|repes|duplicadas|duplicados|sobrantes|sobran|dupes|duplicates|repe|tengo para cambiar|para cambiar)(\b|$)/.test(s)) {
+        return "dupes";
+      }
+
+      if (/(^|\b)(me faltan|faltantes|faltan|faltas|necesito|busco|missing|need|wishlist|buscadas)(\b|$)/.test(s)) {
+        return "missing";
+      }
+
+      return null;
+    }
+
+    function removeMigrateModeLabel(line, mode) {
+      const patterns = mode === "dupes"
+        ? ["repetidas", "repetidos", "repes", "duplicadas", "duplicados", "sobrantes", "sobran", "dupes", "duplicates", "repe", "tengo\\s+para\\s+cambiar", "para\\s+cambiar"]
+        : ["me\\s+faltan", "faltantes", "faltan", "faltas", "necesito", "busco", "missing", "need", "wishlist", "buscadas"];
+
+      const re = new RegExp("^\\s*(?:" + patterns.join("|") + ")\\s*:?-?\\s*", "i");
+      return String(line || "").replace(re, "").trim();
+    }
+
+    function shouldIgnoreMigrateLine(line) {
+      return /https?:\/\//i.test(line)
+        || /descarga|download|figuritas app|usa mex|usa méx|usa mexico|usa méxico/i.test(line);
+    }
+
+    function parseMigrateList(text) {
+      const missing = {};
+      const dupes = {};
+      const unknownLines = [];
+      let mode = null;
+      let sawMissingLabel = false;
+      let sawDupesLabel = false;
+
+      const lines = String(text || "")
+        .replace(/\u00a0/g, " ")
+        .replace(/\r/g, "\n")
+        .split("\n");
+
+      for (const rawLine of lines) {
+        let line = rawLine.trim();
+
+        if (!line) continue;
+        if (shouldIgnoreMigrateLine(line)) continue;
+
+        const detected = detectMigrateMode(line);
+
+        if (detected) {
+          mode = detected;
+
+          if (detected === "missing") sawMissingLabel = true;
+          if (detected === "dupes") sawDupesLabel = true;
+
+          line = removeMigrateModeLabel(line, detected);
+          if (!line) continue;
+        }
+
+        if (!mode) continue;
+
+        const parsedCodes = parseMigrateStickerLine(line);
+
+        if (!parsedCodes.length) {
+          unknownLines.push(line);
+          continue;
+        }
+
+        const target = mode === "missing" ? missing : dupes;
+
+        for (const item of parsedCodes) {
+          target[item.code] = Number(target[item.code] || 0) + Number(item.amount || 1);
+        }
+      }
+
+      return {
+        missing,
+        dupes,
+        unknownLines,
+        sawMissingLabel,
+        sawDupesLabel
+      };
+    }
+
+    function parseMigrateStickerLine(line) {
+      const out = [];
+      const codeLookup = getMigrateCodeLookup();
+      let clean = String(line || "")
+        .trim()
+        .replace(/^[•\-–—*]\s*/, "")
+        .replace(/[;，]/g, ",")
+        .replace(/[“”]/g, '"');
+
+      if (!clean) return out;
+
+      if (/^00$/i.test(clean)) {
+        if (codeLookup.has("00")) out.push({ code: "00", amount: 1 });
+        return out;
+      }
+
+      const sectionItems = findMigrateSectionItems(clean);
+
+      if (sectionItems.length) {
+        for (const item of sectionItems) {
+          const tokens = extractMigrateNumberTokens(item.body);
+
+          for (const token of tokens) {
+            const code = buildMigrateCode(item.section, token.number);
+
+            if (code && codeLookup.has(code)) {
+              out.push({ code, amount: token.amount });
+            }
+          }
+        }
+
+        return mergeMigrateParsedItems(out);
+      }
+
+      const explicit = extractMigrateExplicitCodes(clean);
+
+      for (const item of explicit) {
+        if (codeLookup.has(item.code)) {
+          out.push(item);
+        }
+      }
+
+      return mergeMigrateParsedItems(out);
+    }
+
+    function findMigrateSectionItems(line) {
+      const clean = String(line || "");
+      const normalized = migrateStripAccents(clean).toUpperCase();
+      const sections = migrateKnownSections().filter(section => section !== "00");
+      const results = [];
+
+      if (sections.length) {
+        const sectionPattern = sections.map(escapeMigrateRegex).join("|");
+        const sectionRe = new RegExp("(^|[^A-Z0-9])(" + sectionPattern + ")(?=$|[^A-Z0-9]|\\d)", "gi");
+        const matches = [];
+        let match;
+
+        while ((match = sectionRe.exec(normalized)) !== null) {
+          matches.push({
+            section: match[2].toUpperCase(),
+            start: match.index + match[1].length,
+            bodyStart: match.index + match[1].length + match[2].length
+          });
+        }
+
+        for (let i = 0; i < matches.length; i++) {
+          const current = matches[i];
+          const next = matches[i + 1];
+          const body = clean.slice(current.bodyStart, next ? next.start : clean.length);
+
+          if (extractMigrateNumberTokens(body).length) {
+            results.push({ section: current.section, body });
+          }
+        }
+
+        if (results.length) return results;
+      }
+
+      const aliasEntries = migrateSectionAliases().filter(item => item.section !== "00");
+      const aliasPattern = aliasEntries
+        .map(item => escapeMigrateRegex(item.alias).replace(/\s+/g, "\\s+"))
+        .join("|");
+
+      if (!aliasPattern) return [];
+
+      const aliasLookup = new Map(aliasEntries.map(item => [canonicalMigrateAlias(item.alias), item.section]));
+      const aliasRe = new RegExp("(^|[^A-Z0-9])(" + aliasPattern + ")(?=$|[^A-Z0-9]|\\d)", "gi");
+      const matches = [];
+      let match;
+
+      while ((match = aliasRe.exec(normalized)) !== null) {
+        const alias = canonicalMigrateAlias(match[2] || "");
+        const section = aliasLookup.get(alias);
+
+        if (!section) continue;
+
+        matches.push({
+          section,
+          start: match.index + match[1].length,
+          bodyStart: match.index + match[1].length + match[2].length
+        });
+      }
+
+      for (let i = 0; i < matches.length; i++) {
+        const current = matches[i];
+        const next = matches[i + 1];
+        const body = clean.slice(current.bodyStart, next ? next.start : clean.length);
+
+        if (extractMigrateNumberTokens(body).length) {
+          results.push({ section: current.section, body });
+        }
+      }
+
+      return results;
+    }
+
+    function extractMigrateNumberTokens(text) {
+      const tokens = [];
+      let source = String(text || "");
+
+      source = source.replace(/\b(0?\d{1,2})\s*(?:-|–|—|a|al|hasta)\s*(0?\d{1,2})\b/gi, (full, a, b) => {
+        const start = Number(a);
+        const end = Number(b);
+
+        if (Number.isFinite(start) && Number.isFinite(end) && start > 0 && end >= start && end - start <= 60) {
+          for (let n = start; n <= end; n++) {
+            tokens.push({ number: String(n), amount: 1 });
+          }
+        }
+
+        return " ";
+      });
+
+      const re = /(00|\d{1,2})(?:\s*(?:\(|\[)?\s*[x×]\s*(\d{1,2})\s*(?:\)|\])?)?/gi;
+      let match;
+
+      while ((match = re.exec(source)) !== null) {
+        const number = match[1];
+        const amount = Math.max(1, Math.floor(Number(match[2] || 1)));
+
+        tokens.push({ number, amount });
+      }
+
+      return tokens;
+    }
+
+    function extractMigrateExplicitCodes(text) {
+      const found = [];
+      const re = /\b(00|[A-Z]{2,3}\s*[-#]?\s*0?\d{1,2})(?:\s*(?:\(|\[)?\s*[x×]\s*(\d{1,2})\s*(?:\)|\])?)?\b/gi;
+      let match;
+
+      while ((match = re.exec(String(text || ""))) !== null) {
+        const code = normalizeMigrateExplicitCode(match[1]);
+
+        if (code) {
+          found.push({
+            code,
+            amount: Math.max(1, Math.floor(Number(match[2] || 1)))
+          });
+        }
+      }
+
+      return found;
+    }
+
+    function normalizeMigrateExplicitCode(raw) {
+      const value = String(raw || "").replace(/[\s\-#]+/g, "").toUpperCase();
+
+      if (value === "00") return "00";
+
+      const match = value.match(/^([A-Z]{2,3})(00|0?\d{1,2})$/);
+      if (!match) return null;
+
+      return buildMigrateCode(match[1], match[2]);
+    }
+
+    function buildMigrateCode(section, rawNumber) {
+      const sec = String(section || "").toUpperCase();
+      const value = String(rawNumber || "").trim();
+      const codeLookup = getMigrateCodeLookup();
+
+      if (value === "00") return "00";
+
+      const n = Number(value);
+      if (!Number.isFinite(n) || n <= 0) return null;
+
+      const code = sec + String(n);
+
+      return codeLookup.has(code) ? code : null;
+    }
+
+    function mergeMigrateParsedItems(items) {
+      const map = {};
+
+      for (const item of items) {
+        map[item.code] = Number(map[item.code] || 0) + Number(item.amount || 1);
+      }
+
+      return Object.entries(map).map(([code, amount]) => ({ code, amount }));
+    }
+
+    function buildMigratedQuantities(parsed) {
+      const nextQuantities = {};
+      const conflicts = [];
+
+      for (const st of BASE_STICKERS) {
+        const code = String(st.code || "").toUpperCase();
+
+        if (Number(parsed.missing[code] || 0) > 0) {
+          continue;
+        }
+
+        nextQuantities[code] = 1;
+      }
+
+      for (const [code, amount] of Object.entries(parsed.dupes)) {
+        if (Number(parsed.missing[code] || 0) > 0) {
+          conflicts.push(code);
+        }
+
+        nextQuantities[code] = Math.max(Number(nextQuantities[code] || 1), Number(amount || 1) + 1);
+      }
+
+      return { nextQuantities, conflicts };
+    }
+
+    function openMigrateModal() {
+      const overlay = $("migrateOverlay");
+      if (!overlay) return;
+
+      $("migrateIntroStep").classList.remove("hidden");
+      $("migratePasteStep").classList.add("hidden");
+      $("migrateWarning").classList.add("hidden");
+      $("migrateOk").classList.add("hidden");
+      $("migrateSummary").classList.add("hidden");
+
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeMigrateModal() {
+      const overlay = $("migrateOverlay");
+      if (!overlay) return;
+
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+
+    function showMigratePasteStep() {
+      $("migrateIntroStep").classList.add("hidden");
+      $("migratePasteStep").classList.remove("hidden");
+
+      setTimeout(() => {
+        const input = $("migrateInput");
+        if (input) input.focus();
+      }, 80);
+    }
+
+    function clearMigrateForm() {
+      $("migrateInput").value = "";
+      $("migrateWarning").classList.add("hidden");
+      $("migrateOk").classList.add("hidden");
+      $("migrateSummary").classList.add("hidden");
+      showToast("Limpio");
+    }
+
+    function registerMigratedCards() {
+      const input = $("migrateInput");
+      const text = input ? input.value.trim() : "";
+
+      if (!text) {
+        alert("Pega primero la lista de la otra aplicación.");
+        return;
+      }
+
+      const parsed = parseMigrateList(text);
+      const missingCount = Object.keys(parsed.missing).length;
+      const dupesCount = Object.keys(parsed.dupes).length;
+
+      if (!missingCount && !dupesCount) {
+        $("migrateOk").classList.add("hidden");
+        $("migrateSummary").classList.add("hidden");
+        $("migrateWarning").classList.remove("hidden");
+        $("migrateWarning").textContent = "No pude detectar faltantes ni repetidas. Revisa que la lista tenga títulos como “Faltantes”, “Me faltan” o “Repetidas”.";
+        return;
+      }
+
+      if (!confirm("Esta migración reemplazará tu inventario actual de FIGUAPP. ¿Quieres continuar?")) {
+        return;
+      }
+
+      const migrated = buildMigratedQuantities(parsed);
+      quantities = migrated.nextQuantities;
+      saveQuantities();
+      render();
+
+      const ownedCount = BASE_STICKERS.filter(st => Number(quantities[st.code] || 0) > 0).length;
+      const pct = BASE_STICKERS.length ? Math.round((ownedCount / BASE_STICKERS.length) * 100) : 0;
+      const warnings = [];
+
+      if (!parsed.sawMissingLabel) {
+        warnings.push("No encontré una sección de faltantes. Por eso asumí que tienes todas las cartas que no figuran como repetidas.");
+      }
+
+      if (!parsed.sawDupesLabel) {
+        warnings.push("No encontré una sección de repetidas. Por eso registré sin duplicados adicionales.");
+      }
+
+      if (parsed.unknownLines.length) {
+        warnings.push(`Se ignoraron ${parsed.unknownLines.length} línea(s) sin formato compatible.`);
+      }
+
+      if (migrated.conflicts.length) {
+        warnings.push(`Detecté ${migrated.conflicts.length} código(s) tanto en faltantes como en repetidas; los registré como repetidos.`);
+      }
+
+      $("migrateMissingStat").textContent = missingCount;
+      $("migrateDupesStat").textContent = dupesCount;
+      $("migrateOwnedStat").textContent = ownedCount;
+      $("migratePctStat").textContent = pct + "%";
+      $("migrateSummary").classList.remove("hidden");
+
+      $("migrateOk").classList.remove("hidden");
+      $("migrateOk").textContent = `Inventario migrado: ${ownedCount} cartas registradas y ${dupesCount} tipo(s) con repetidas.`;
+
+      if (warnings.length) {
+        $("migrateWarning").classList.remove("hidden");
+        $("migrateWarning").textContent = warnings.join(" ");
+      } else {
+        $("migrateWarning").classList.add("hidden");
+      }
+
+      smallVibration();
+      showToast("Inventario migrado");
+    }
+
     $("view").addEventListener("change", e => { view = e.target.value; render(); });
+    $("openFunnyStatBtn").addEventListener("click", openFunnyStatModal);
+    $("closeFunnyStatBtn").addEventListener("click", closeFunnyStatModal);
+    $("funnyStatOverlay").addEventListener("click", (e) => {
+      if (e.target === $("funnyStatOverlay")) closeFunnyStatModal();
+    });
+    $("openMigrateBtn").addEventListener("click", openMigrateModal);
+    $("closeMigrateBtn").addEventListener("click", closeMigrateModal);
+    $("migrateNextBtn").addEventListener("click", showMigratePasteStep);
+    $("registerMigrateBtn").addEventListener("click", registerMigratedCards);
+    $("clearMigrateBtn").addEventListener("click", clearMigrateForm);
+
+    $("migrateOverlay").addEventListener("click", (e) => {
+      if (e.target === $("migrateOverlay")) closeMigrateModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeMigrateModal();
+        closeFunnyStatModal();
+      }
+    });
     $("lockModeBtn").addEventListener("click", toggleInventoryLock);
     $("openAll").addEventListener("click", () => {
       for (const key of grouped().keys()) openSections[key] = true;
