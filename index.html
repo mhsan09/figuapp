@@ -1169,6 +1169,29 @@
         transform: translateX(-1px);
       }
     }
+
+    /* Feedback breve al agregar o quitar una figura */
+    body.figure-change-shake .app {
+      animation: figureChangeShake .18s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes figureChangeShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      50% { transform: translateX(2px); }
+      75% { transform: translateX(-1px); }
+    }
+
+    .code,
+    .name {
+      transition: color .28s ease, text-shadow .28s ease;
+    }
+
+    .card.figure-change-flash .code,
+    .card.figure-change-flash .name {
+      color: var(--yellow) !important;
+      text-shadow: 0 0 12px rgba(250,204,21,.38);
+    }
     
     @media (max-width: 520px) {
       .lock-float-btn {
@@ -1544,6 +1567,28 @@ FWC10"
         document.body.classList.remove("lock-shake");
       }, 380);
     }
+
+
+    function playFigureChangeFeedback(code) {
+      document.body.classList.remove("figure-change-shake");
+      void document.body.offsetWidth;
+      document.body.classList.add("figure-change-shake");
+
+      setTimeout(() => {
+        document.body.classList.remove("figure-change-shake");
+      }, 210);
+
+      const changedCard = [...document.querySelectorAll(".card")]
+        .find(card => card.dataset.code === code);
+
+      if (!changedCard) return;
+
+      changedCard.classList.add("figure-change-flash");
+
+      setTimeout(() => {
+        changedCard.classList.remove("figure-change-flash");
+      }, 1100);
+    }
     
     function setInventoryLocked(isLocked) {
       inventoryLocked = isLocked;
@@ -1725,6 +1770,7 @@ ${buildExchangeSection("🕵️‍♂️ ME FALTAN", missingFilter, false)}
       const q = qty(st.code);
       const el = document.createElement("div");
       el.className = "card" + (q > 0 ? " owned" : "") + (q > 1 ? " duplicate" : "");
+      el.dataset.code = st.code;
       el.innerHTML = `
         ${q > 0 ? `<div class="badge">x${q}</div>` : ""}
         <div class="code">${st.section === "CC" ? "🥤" : ""}${st.code}</div>
@@ -1746,6 +1792,7 @@ ${buildExchangeSection("🕵️‍♂️ ME FALTAN", missingFilter, false)}
       quantities[st.code] = q + 1;
       saveQuantities();
       render();
+      playFigureChangeFeedback(st.code);
     });
     
     el.querySelector(".minus").addEventListener("click", (e) => {
@@ -1760,6 +1807,7 @@ ${buildExchangeSection("🕵️‍♂️ ME FALTAN", missingFilter, false)}
       if (quantities[st.code] === 0) delete quantities[st.code];
       saveQuantities();
       render();
+      playFigureChangeFeedback(st.code);
     });
     
     return el;
