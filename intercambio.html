@@ -436,6 +436,85 @@
       outline: 2px solid rgba(96,165,250,.85);
     }
 
+    /* Figuritas cromadas: todas las FWC y la número 1 de cada selección */
+    .card.chrome {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.30), rgba(148,163,184,.16) 42%, rgba(255,255,255,.25)),
+        #334155;
+      border-color: rgba(255,255,255,.78);
+      color: #ffffff;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.78),
+        inset 0 -1px 0 rgba(255,255,255,.16),
+        0 8px 22px rgba(0,0,0,.22);
+    }
+
+    .card.chrome .code {
+      color: #ffffff;
+      text-shadow: 0 1px 8px rgba(255,255,255,.34);
+    }
+
+    .card.chrome .name {
+      color: #f1f5f9;
+    }
+
+    .card.chrome.selected {
+      outline: 2px solid rgba(250,204,21,.95);
+    }
+
+    .card.chrome.receive.selected {
+      outline-color: rgba(96,165,250,.95);
+    }
+
+    .chrome-mark {
+      position: absolute;
+      top: 5px;
+      left: 7px;
+      z-index: 2;
+      color: #ffffff;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 950;
+      text-shadow: 0 1px 8px rgba(255,255,255,.55);
+    }
+
+    /* Destello breve al añadir una figurita a una bandeja */
+    .card.basket-flash,
+    .chip.basket-flash {
+      animation: basketYellowFlash 1.35s ease both;
+    }
+
+    .card.basket-flash .code,
+    .card.basket-flash .name,
+    .chip.basket-flash {
+      animation: basketTextYellowFlash 1.35s ease both;
+    }
+
+    @keyframes basketYellowFlash {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(250,204,21,0);
+      }
+      18% {
+        transform: scale(1.025);
+        box-shadow: 0 0 0 4px rgba(250,204,21,.18), 0 0 26px rgba(250,204,21,.42);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(250,204,21,0);
+      }
+    }
+
+    @keyframes basketTextYellowFlash {
+      0%, 72% {
+        color: var(--yellow);
+        text-shadow: 0 0 14px rgba(250,204,21,.50);
+      }
+      100% {
+        text-shadow: none;
+      }
+    }
+
     .badge {
       position:absolute;
       top:6px;
@@ -566,10 +645,194 @@
         height: 46px;
       }
     }
+
+
+    /* Tutorial inicial de intercambios */
+    body.tutorial-open {
+      overflow: hidden;
+    }
+
+    .trade-tutorial-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(14px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom));
+      background: rgba(0, 0, 0, .68);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .22s ease, visibility .22s ease;
+    }
+
+    .trade-tutorial-overlay.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .trade-tutorial-card {
+      width: min(100%, 470px);
+      max-height: calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top left, rgba(250,204,21,.15), transparent 18rem),
+        radial-gradient(circle at top right, rgba(52,211,153,.10), transparent 18rem),
+        rgba(8,11,18,.98);
+      box-shadow: 0 28px 90px rgba(0,0,0,.62);
+      transform: translateY(14px) scale(.97);
+      transition: transform .28s cubic-bezier(.2,.9,.2,1);
+    }
+
+    .trade-tutorial-overlay.show .trade-tutorial-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .trade-tutorial-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px 11px;
+      border-bottom: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .trade-tutorial-logo {
+      width: 43px;
+      height: 43px;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: drop-shadow(0 5px 12px rgba(0,0,0,.38));
+    }
+
+    .trade-tutorial-brand {
+      font-size: 23px;
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -.045em;
+    }
+
+    .trade-tutorial-media {
+      min-height: 0;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 10px 4px;
+      overflow: auto;
+    }
+
+    .trade-tutorial-image {
+      display: block;
+      width: 100%;
+      max-height: calc(100dvh - 210px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      object-fit: contain;
+      border-radius: 18px;
+      background: #05070d;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .trade-tutorial-footer {
+      flex-shrink: 0;
+      padding: 10px 12px 12px;
+    }
+
+    .trade-tutorial-progress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .trade-tutorial-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.20);
+      transition: width .18s ease, background .18s ease;
+    }
+
+    .trade-tutorial-dot.active {
+      width: 22px;
+      background: var(--yellow);
+    }
+
+    .trade-tutorial-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .trade-tutorial-actions .btn {
+      width: 100%;
+      min-height: 46px;
+    }
+
+    .trade-tutorial-skip {
+      background: rgba(255,255,255,.06);
+      color: #dbe4f3;
+    }
+
+    @media (min-width: 430px) {
+      .trade-tutorial-actions {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .trade-tutorial-skip {
+        order: 1;
+      }
+
+      .trade-tutorial-next {
+        order: 2;
+      }
+    }
+
   </style>
 </head>
 
 <body>
+
+  <div id="tradeTutorialOverlay" class="trade-tutorial-overlay show" aria-hidden="false">
+    <div class="trade-tutorial-card" role="dialog" aria-modal="true" aria-label="Cómo usar los intercambios de FiguApp">
+      <div class="trade-tutorial-header">
+        <img src="logobase.png" alt="FiguApp" class="trade-tutorial-logo" />
+        <div class="trade-tutorial-brand">FIGUAPP</div>
+      </div>
+
+      <div class="trade-tutorial-media">
+        <img
+          id="tradeTutorialImage"
+          src="paso1.jpg"
+          alt="Paso 1 de 4 del tutorial de intercambios"
+          class="trade-tutorial-image"
+        />
+      </div>
+
+      <div class="trade-tutorial-footer">
+        <div id="tradeTutorialProgress" class="trade-tutorial-progress" aria-label="Paso 1 de 4">
+          <span class="trade-tutorial-dot active"></span>
+          <span class="trade-tutorial-dot"></span>
+          <span class="trade-tutorial-dot"></span>
+          <span class="trade-tutorial-dot"></span>
+        </div>
+
+        <div class="trade-tutorial-actions">
+          <button id="tradeTutorialSkipBtn" class="btn trade-tutorial-skip" type="button">Sé cómo usarlo</button>
+          <button id="tradeTutorialNextBtn" class="btn primary trade-tutorial-next" type="button">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="app">
     <header class="hero">
       <div class="hero-inner">
@@ -647,12 +910,18 @@
 
       <div class="trade-layout">
         <div class="tray">
-          <div class="list-title">Bandeja: yo entrego</div>
+          <div class="list-head">
+            <div class="list-title">Bandeja: yo entrego</div>
+            <span class="pill" id="giveTrayCount">0</span>
+          </div>
           <div id="giveTray" class="small-note">Nada seleccionado.</div>
         </div>
 
         <div class="tray">
-          <div class="list-title">Bandeja: me entregan</div>
+          <div class="list-head">
+            <div class="list-title">Bandeja: me entregan</div>
+            <span class="pill" id="receiveTrayCount">0</span>
+          </div>
           <div id="receiveTray" class="small-note">Nada seleccionado.</div>
         </div>
       </div>
@@ -759,6 +1028,70 @@
       { id: 995, code: "CC14", name: "LM", section: "CC", sectionName: "Bebidas" }
     ];
 
+    const TRADE_TUTORIAL_IMAGES = ["paso1.jpg", "paso2.jpg", "paso3.jpg", "paso4.jpg"];
+    let tradeTutorialStep = 0;
+
+    function initTradeTutorial() {
+      const overlay = $("tradeTutorialOverlay");
+      const nextBtn = $("tradeTutorialNextBtn");
+      const skipBtn = $("tradeTutorialSkipBtn");
+
+      if (!overlay || !nextBtn || !skipBtn) return;
+
+      document.body.classList.add("tutorial-open");
+      renderTradeTutorialStep();
+
+      nextBtn.addEventListener("click", () => {
+        if (tradeTutorialStep >= TRADE_TUTORIAL_IMAGES.length - 1) {
+          closeTradeTutorial();
+          return;
+        }
+
+        tradeTutorialStep += 1;
+        renderTradeTutorialStep();
+        smallVibration();
+      });
+
+      skipBtn.addEventListener("click", closeTradeTutorial);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && overlay.classList.contains("show")) {
+          closeTradeTutorial();
+        }
+      });
+    }
+
+    function renderTradeTutorialStep() {
+      const image = $("tradeTutorialImage");
+      const nextBtn = $("tradeTutorialNextBtn");
+      const progress = $("tradeTutorialProgress");
+
+      if (!image || !nextBtn || !progress) return;
+
+      const stepNumber = tradeTutorialStep + 1;
+      image.src = TRADE_TUTORIAL_IMAGES[tradeTutorialStep];
+      image.alt = `Paso ${stepNumber} de ${TRADE_TUTORIAL_IMAGES.length} del tutorial de intercambios`;
+      nextBtn.textContent = tradeTutorialStep === TRADE_TUTORIAL_IMAGES.length - 1
+        ? "Entendido"
+        : "Siguiente";
+
+      progress.setAttribute("aria-label", `Paso ${stepNumber} de ${TRADE_TUTORIAL_IMAGES.length}`);
+      progress.querySelectorAll(".trade-tutorial-dot").forEach((dot, index) => {
+        dot.classList.toggle("active", index === tradeTutorialStep);
+      });
+    }
+
+    function closeTradeTutorial() {
+      const overlay = $("tradeTutorialOverlay");
+      if (!overlay) return;
+
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("tutorial-open");
+      smallVibration();
+    }
+
+    initTradeTutorial();
     init();
 
     async function init() {
@@ -1362,11 +1695,14 @@
       for (const st of items) {
         const chosen = Boolean(selectedMap[st.code]);
         const available = availableUnits(st, kind);
+        const chrome = isChromeSticker(st);
 
         const el = document.createElement("div");
-        el.className = `card available ${kind === "receive" ? "receive" : ""} ${chosen ? "selected" : ""}`;
+        el.dataset.code = st.code;
+        el.className = `card available ${kind === "receive" ? "receive" : ""} ${chosen ? "selected" : ""} ${chrome ? "chrome" : ""}`;
 
         el.innerHTML = `
+          ${chrome ? '<div class="chrome-mark" aria-label="Cromada">*</div>' : ""}
           <div class="badge ${kind === "receive" ? "blue" : ""}">x${available}</div>
           <div class="code">${escapeHtml(displayCode(st))}</div>
           <div class="name">${escapeHtml(sectionTitleWithFlag(st))}</div>
@@ -1374,9 +1710,14 @@
         `;
 
         el.addEventListener("click", () => {
+          const wasSelected = Boolean(selectedMap[st.code]);
           toggleSelected(selectedMap, st.code);
           smallVibration();
           renderComparison();
+
+          if (!wasSelected) {
+            flashBasketAddition(kind, st.code);
+          }
         });
 
         box.appendChild(el);
@@ -1388,7 +1729,38 @@
       return st.code;
     }
 
+    function isChromeSticker(st) {
+      if (!st) return false;
+      if (String(st.section || "").toUpperCase() === "FWC") return true;
+      return stickerNumber(st.code) === "1";
+    }
+
+    function flashBasketAddition(kind, code) {
+      const listId = kind === "give" ? "giveList" : "receiveList";
+      const trayId = kind === "give" ? "giveTray" : "receiveTray";
+      const targets = [
+        document.querySelector(`#${listId} .card[data-code="${code}"]`),
+        document.querySelector(`#${trayId} .chip[data-code="${code}"]`)
+      ].filter(Boolean);
+
+      for (const target of targets) {
+        target.classList.remove("basket-flash");
+        void target.offsetWidth;
+        target.classList.add("basket-flash");
+
+        setTimeout(() => {
+          target.classList.remove("basket-flash");
+        }, 1400);
+      }
+    }
+
     function updateTrays() {
+      const giveEntries = selectedCodes(selectedGive);
+      const receiveEntries = selectedCodes(selectedReceive);
+
+      $("giveTrayCount").textContent = giveEntries.length;
+      $("receiveTrayCount").textContent = receiveEntries.length;
+
       renderChips("giveTray", selectedGive, "give");
       renderChips("receiveTray", selectedReceive, "receive");
     }
@@ -1410,6 +1782,7 @@
 
       for (const code of entries) {
         const chip = document.createElement("span");
+        chip.dataset.code = code;
         chip.className = `chip ${kind}`;
         chip.innerHTML = `${escapeHtml(code)} <button type="button" aria-label="Quitar">−</button>`;
 
@@ -1444,19 +1817,23 @@
     }
 
     function buildRequestMessage(giveCodes, receiveCodes) {
-      return `Hola, revisé tus figuritas con mi FiguApp y podemos intercambiar las siguientes:
+      const giveWord = giveCodes.length === 1 ? "figurita" : "figuritas";
+      const receiveWord = receiveCodes.length === 1 ? "figurita" : "figuritas";
 
-YO ENTREGO:
+      return `Hola, revisé tus figuritas con FiguApp y podemos hacer este intercambio:
+
+YO ENTREGO ${giveCodes.length} ${giveWord}:
 
 ${formatCodesForMessage(giveCodes)}
 
-TÚ ME ENTREGAS:
+TÚ DAS ${receiveCodes.length} ${receiveWord}:
 
 ${formatCodesForMessage(receiveCodes)}
 
-¿Me confirmas si podríamos hacer los cambios?
+¿Me confirmas si podemos hacer el cambio?
 
-✅ Descarga la app 100% GRATIS sin anuncios: https://mhsan09.github.io/figuapp`;
+⚽️ Si tú también quieres encontrar fácilmente tus intercambios usando una lista de cualquier app, descarga FiguApp. Es 100% gratis y sin anuncios:
+https://mhsan09.github.io/figuapp`;
     }
 
     function formatCodesForMessage(codes) {
