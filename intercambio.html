@@ -688,12 +688,27 @@
         radial-gradient(circle at top right, rgba(52,211,153,.10), transparent 18rem),
         rgba(8,11,18,.98);
       box-shadow: 0 28px 90px rgba(0,0,0,.62);
-      transform: translateY(14px) scale(.97);
+      transform: translateY(30px) scale(.94);
       transition: transform .28s cubic-bezier(.2,.9,.2,1);
     }
 
     .trade-tutorial-overlay.show .trade-tutorial-card {
       transform: translateY(0) scale(1);
+    }
+
+    .trade-tutorial-title {
+      padding: 12px 16px 2px;
+      text-align: center;
+      font-size: clamp(18px, 4.8vw, 23px);
+      line-height: 1.12;
+      font-weight: 950;
+      letter-spacing: -.035em;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    .trade-tutorial-title span {
+      color: var(--yellow);
     }
 
     .trade-tutorial-header {
@@ -733,7 +748,7 @@
     .trade-tutorial-image {
       display: block;
       width: 100%;
-      max-height: calc(100dvh - 210px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      max-height: calc(100dvh - 255px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
       object-fit: contain;
       border-radius: 18px;
       background: #05070d;
@@ -801,11 +816,15 @@
 
 <body>
 
-  <div id="tradeTutorialOverlay" class="trade-tutorial-overlay show" aria-hidden="false">
+  <div id="tradeTutorialOverlay" class="trade-tutorial-overlay" aria-hidden="true">
     <div class="trade-tutorial-card" role="dialog" aria-modal="true" aria-label="Cómo usar los intercambios de FiguApp">
       <div class="trade-tutorial-header">
         <img src="logobase.png" alt="FiguApp" class="trade-tutorial-logo" />
         <div class="trade-tutorial-brand">FIGUAPP</div>
+      </div>
+
+      <div class="trade-tutorial-title">
+        ¿Cómo usar la herramienta <span>INTERCAMBIOS</span>?
       </div>
 
       <div class="trade-tutorial-media">
@@ -1038,7 +1057,6 @@
 
       if (!overlay || !nextBtn || !skipBtn) return;
 
-      document.body.classList.add("tutorial-open");
       renderTradeTutorialStep();
 
       nextBtn.addEventListener("click", () => {
@@ -1059,6 +1077,29 @@
           closeTradeTutorial();
         }
       });
+
+      const showAfterPageLoad = () => {
+        requestAnimationFrame(() => {
+          setTimeout(openTradeTutorial, 420);
+        });
+      };
+
+      if (document.readyState === "complete") {
+        showAfterPageLoad();
+      } else {
+        window.addEventListener("load", showAfterPageLoad, { once: true });
+      }
+    }
+
+    function openTradeTutorial() {
+      const overlay = $("tradeTutorialOverlay");
+      if (!overlay) return;
+
+      tradeTutorialStep = 0;
+      renderTradeTutorialStep();
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.classList.add("tutorial-open");
     }
 
     function renderTradeTutorialStep() {
